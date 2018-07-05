@@ -27,6 +27,9 @@ if($route == "/" || $route == "/main") {
 
 } elseif ($route == "/cart") {
     require __DIR__ . '/views/cart.php';
+} else {
+    header("HTTP/1.0 404 Not Found");
+    echo "404 page not found";
 }
 
 $content = ob_get_clean();

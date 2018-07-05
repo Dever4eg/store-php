@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" href="../assets/main.css" type="text/css">
 
-    <title>Products</title>
+    <title>DevStore</title>
 </head>
 <body>
 <header>
