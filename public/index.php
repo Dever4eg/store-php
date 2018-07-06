@@ -14,19 +14,19 @@ ob_start();
 
 if($route == "/" || $route == "/main") {
 
-    $products = require __DIR__ . '/products_data.php';
-    require __DIR__ . '/views/main.php';
+    $products = require __DIR__ . '/../products_data.php';
+    require __DIR__ . '/../views/main.php';
 
 } elseif($route == "/details") {
 
-    $products = require __DIR__  . '/products_data.php';
+    $products = require __DIR__ . '/../products_data.php';
     $product = $products[$_GET['id']];
 
 
-    require __DIR__ . '/views/product.php';
+    require __DIR__ . '/../views/product.php';
 
 } elseif ($route == "/cart") {
-    require __DIR__ . '/views/cart.php';
+    require __DIR__ . '/../views/cart.php';
 } else {
     header("HTTP/1.0 404 Not Found");
     echo "404 page not found";
@@ -34,4 +34,4 @@ if($route == "/" || $route == "/main") {
 
 $content = ob_get_clean();
 
-require __DIR__ . "/views/layout.php";
+require __DIR__ . "/../views/layout.php";
