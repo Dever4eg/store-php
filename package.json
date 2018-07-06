@@ -1,22 +1,29 @@
 {
   "name": "store-php",
   "version": "1.0.0",
-  "description": "",
+  "description": "Store study project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prod": "webpack --mode=production",
+    "dev": "webpack --mode=development",
+    "watch": "webpack --watch --mode=development"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Dever4eg/store-php.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Bogdan Onischenko",
   "bugs": {
     "url": "https://github.com/Dever4eg/store-php/issues"
   },
   "homepage": "https://github.com/Dever4eg/store-php#readme",
   "devDependencies": {
-    "webpack": "^4.15.1"
+    "webpack": "^4.15.1",
+    "webpack-cli": "^3.0.8"
+  },
+  "dependencies": {
+    "bootstrap": "^4.1.1",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.3"
   }
 }
