@@ -8,10 +8,21 @@
 
 namespace Src\Routing;
 
+use Src\Traits\Singleton;
+
 class RouteHandler
 {
-    public static function test()
+    use Singleton;
+
+    protected $routes;
+
+    public function add($method, $url, $handler, $name = null)
     {
-        echo "bvdfs";
+        $this->routes[] = new RouteItem($method, $url, $handler, $name);
+    }
+
+    public function getAll()
+    {
+        return $this->routes;
     }
 }

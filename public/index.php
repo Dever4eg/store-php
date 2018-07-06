@@ -4,12 +4,9 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 const APP_PATH = __DIR__ . "/../app";
 
-$rega = "SDvas";
-
 \Src\App::run();
 
-die;
-
+/*
 //Получаем адсес без параметров в переменную $route
 if(!empty($_SERVER['QUERY_STRING']))
     $route = substr(
@@ -44,3 +41,4 @@ if($route == "/" || $route == "/main") {
 $content = ob_get_clean();
 
 require __DIR__ . "/../views/layout.php";
+*/

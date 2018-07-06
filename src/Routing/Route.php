@@ -8,10 +8,15 @@
 
 namespace Src\Routing;
 
+
+/**
+ * @method static void add($method, $url, $handler, $name = null) set route
+ * @method static array getAll() return all defined routes
+ */
 class Route
 {
-    public static function add()
+    public static function __callStatic($method, $parameters)
     {
-        echo "test";
+        return call_user_func_array([RouteHandler::instance(), $method], $parameters);
     }
 }
