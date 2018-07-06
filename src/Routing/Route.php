@@ -12,6 +12,8 @@ namespace Src\Routing;
 /**
  * @method static void add($method, $url, $handler, $name = null) set route
  * @method static array getAll() return all defined routes
+ * @method static handle()
+ * @method static RouteItem match()
  */
 class Route
 {
