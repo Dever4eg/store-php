@@ -42,3 +42,9 @@ Route::add('get', '/cart', function () {
 
 
 Route::add('get', '/test', [new Controllers\TestController, 'index']);
+Route::add('get', '/login', function() {
+    echo "login page";
+});
+Route::add('post', '/login', function() {
+    echo "logining";
+});
