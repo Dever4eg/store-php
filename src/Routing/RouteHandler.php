@@ -28,7 +28,7 @@ class RouteHandler
         return $this->routes;
     }
 
-    public function match()
+    public function getMatch()
     {
         if(!empty($this->match))
             return $this->match;
@@ -52,27 +52,8 @@ class RouteHandler
     }
 
 
-    public function handle()
+    public function getHandler()
     {
-        if(empty($this->match))
-            $this->match = $this->match();
-
-        $handler = $this->match->handler;
-
-        if(is_callable($handler)) {
-            return $handler();
-        } elseif (is_string($handler)) {
-            $arr = explode('@', $handler);
-
-            $controller_name = "\\App\\Controllers\\" . $arr[0];
-            $action_name = $arr[1];
-
-            if(class_exists($controller_name))
-                $controller = new $controller_name;
-            if(method_exists($controller, $action_name))
-                return $controller->$action_name();
-        }
-        // TODO: Error unknown paramets
-        die('error parse handler');
+        return $this->getMatch()->handler;
     }
 }

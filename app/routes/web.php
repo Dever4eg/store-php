@@ -1,6 +1,12 @@
 <?php
 
+/*
+ * Using Route::add('method', '/url', callback);
+ *       Route::add('method', '/url', [new Controller, 'action']);
+ */
+
 use Src\Routing\Route;
+use App\Controllers;
 
 Route::add('get', '/', function () {
     ob_start();
@@ -35,4 +41,4 @@ Route::add('get', '/cart', function () {
 });
 
 
-Route::add('get', '/test', 'TestController@index');
+Route::add('get', '/test', [new Controllers\TestController, 'index']);

@@ -16,6 +16,7 @@ class App
     public static function run()
     {
         require_once APP_PATH . "/routes/web.php";
-        Route::handle();
+        $handler = Route::getHandler();
+        $handler();
     }
 }
