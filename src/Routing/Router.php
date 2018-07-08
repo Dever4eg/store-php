@@ -8,22 +8,24 @@
 
 namespace Src\Routing;
 
-use Src\Traits\Singleton;
+use Src\App\AppSingleComponent;
 
-class RouteHandler
+class Router implements AppSingleComponent
 {
-    use Singleton;
+    public function __construct()
+    {
+    }
 
     protected $routes = [];
     protected $match = null;
 
     public function add($method, $url, $handler, $name = null)
     {
-        $this->routes[] = new RouteItem($method, $url, $handler, $name);
+        $this->routes[] = new Route($method, $url, $handler, $name);
     }
 
     /**
-     * @return RouteItem[]
+     * @return Route[]
      */
     public function getAll() : array
     {
