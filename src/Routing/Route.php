@@ -25,14 +25,7 @@ class Route
 
     public function match() : bool
     {
-        //Удаляем из url параметры если есть
-        if(!empty($_SERVER['QUERY_STRING']))
-            $url = substr(
-                $_SERVER['REQUEST_URI'],0,
-                strpos($_SERVER['REQUEST_URI'], $_SERVER['QUERY_STRING'])-1);
-        else
-            $url = $_SERVER['REQUEST_URI'];
-
+        $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $method = $_SERVER['REQUEST_METHOD'];
 
         if($this->url == $url && $this->method == $method)
