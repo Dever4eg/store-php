@@ -5,10 +5,11 @@
  *       Route::add('method', '/url', [new Controller, 'action']);
  */
 
-use Src\Routing\Route;
 use App\Controllers;
 
-Route::add('get', '/', function () {
+$router = \Src\App::getRouter();
+
+$router->add('get', '/', function () {
     ob_start();
 
     $products = require APP_PATH . '/products_data.php';
@@ -18,7 +19,7 @@ Route::add('get', '/', function () {
     require APP_PATH . "/views/layout.php";
 });
 
-Route::add('get', '/details', function () {
+$router->add('get', '/details', function () {
     ob_start();
 
 
@@ -31,7 +32,7 @@ Route::add('get', '/details', function () {
     require APP_PATH . "/views/layout.php";
 });
 
-Route::add('get', '/cart', function () {
+$router->add('get', '/cart', function () {
     ob_start();
 
     require APP_PATH . '/views/cart.php';
@@ -41,10 +42,10 @@ Route::add('get', '/cart', function () {
 });
 
 
-Route::add('get', '/test', [new Controllers\TestController, 'index']);
-Route::add('get', '/login', function() {
+$router->add('get', '/test', [new Controllers\TestController, 'index']);
+$router->add('get', '/login', function() {
     echo "login page";
 });
-Route::add('post', '/login', function() {
+$router->add('post', '/login', function() {
     echo "logining";
 });

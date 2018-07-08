@@ -9,7 +9,7 @@
 namespace Src\App;
 
 
-interface AppSingletonComponent
+interface AppSingleComponent
 {
     public function __construct();
 }

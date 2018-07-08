@@ -3,22 +3,40 @@
  * Created by PhpStorm.
  * User: phpuser
  * Date: 06.07.18
- * Time: 13:09
+ * Time: 12:57
  */
 
 namespace Src\Routing;
 
-
-/**
- * @method static void add($method, $url, $handler, $name = null) set route
- * @method static array getAll() return all defined routes
- * @method static callable getHandler()
- * @method static RouteItem match()
- */
 class Route
 {
-    public static function __callStatic($method, $parameters)
+    public $method;
+    public $url;
+    public $handler;
+    public $name;
+
+    public function __construct($method, $url, $handler, $name = null)
     {
-        return call_user_func_array([RouteHandler::instance(), $method], $parameters);
+        $this->method = strtoupper($method);
+        $this->url = $url;
+        $this->handler = $handler;
+        $this->name = $name;
+    }
+
+    public function match() : bool
+    {
+        //Удаляем из url параметры если есть
+        if(!empty($_SERVER['QUERY_STRING']))
+            $url = substr(
+                $_SERVER['REQUEST_URI'],0,
+                strpos($_SERVER['REQUEST_URI'], $_SERVER['QUERY_STRING'])-1);
+        else
+            $url = $_SERVER['REQUEST_URI'];
+
+        $method = $_SERVER['REQUEST_METHOD'];
+
+        if($this->url == $url && $this->method == $method)
+            return true;
+        return false;
     }
 }
