@@ -16,6 +16,9 @@ Trait Singleton
     private function __construct(){}
 
 
+    /**
+     * @return static
+     */
     static function instance()
     {
         if(!isset(static::$instance))
