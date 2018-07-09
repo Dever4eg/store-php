@@ -101,4 +101,41 @@ class Session
         $_SESSION = [];
         session_destroy();
     }
+
+    public function set($key, $value)
+    {
+        if(!$this->sessionExist()) {
+            throw new \Exception("sesstion dont start");
+        }
+        $_SESSION[$key] = $value;
+        return $this;
+    }
+
+    public function get($key)
+    {
+        if(!$this->sessionExist()) {
+            throw new \Exception("sesstion dont start");
+        }
+        if($this->contains($key)) {
+            return $_SESSION[$key];
+        }
+        throw new \Exception("key not found");
+    }
+
+    public function delete($key)
+    {
+        if(!$this->sessionExist()) {
+            throw new \Exception("sesstion dont start");
+        }
+        unset($_SESSION[$key]);
+        return $this;
+    }
+
+    public function contains($key)
+    {
+        if(!$this->sessionExist()) {
+            throw new \Exception("sesstion dont start");
+        }
+        return isset($_SESSION[$key]);
+    }
 }

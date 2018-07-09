@@ -13,7 +13,6 @@ try {
     $session->start();
 
 
-
 } catch (Exception $e) {
     var_dump($e);
 }
