@@ -138,4 +138,15 @@ class Session
         }
         return isset($_SESSION[$key]);
     }
+
+    public function setHandler(\SessionHandlerInterface $sessionHandler)
+    {
+        if($this->sessionExist()) {
+            throw new \Exception("sesstion alredy start");
+        }
+        if(!session_set_save_handler ( $sessionHandler)) {
+            throw new \Exception("session handler does not changed");
+        }
+        return $this;
+    }
 }
