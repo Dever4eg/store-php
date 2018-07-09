@@ -33,6 +33,18 @@ class Session
         }
     }
 
+    public function cookieExist()
+    {
+        try {
+            return isset($_COOKIE[$this->getName()]);
+        } catch (\Exception $e) {
+            if(isset($_COOKIE['PHPSESSID'])) {
+                return true;
+            }
+            throw $e;
+        }
+    }
+
     public function getName()
     {
         if(!$this->sessionExist())
@@ -48,6 +60,30 @@ class Session
         return $this;
     }
 
+    public function getId()
+    {
+        if(!$this->sessionExist())
+            throw new \Exception("session does not start");
+        return session_id();
+    }
+
+    public function setId($id)
+    {
+        if($this->sessionExist())
+            throw new \Exception("Session already start");
+        session_id($id);
+        return $this;
+    }
+
+    public function setSavePath($path)
+    {
+        if($this->sessionExist()) {
+            throw new \Exception("sesstion alredy start");
+        }
+        session_save_path($path);
+        return $this;
+    }
+
     public function start()
     {
         if ($this->sessionExist())
@@ -55,5 +91,14 @@ class Session
         if(!session_start())
             throw new \Exception("session dont start");
         return $this;
+    }
+
+    public function destroy()
+    {
+        if (!$this->sessionExist())
+            return false;
+
+        $_SESSION = [];
+        session_destroy();
     }
 }
