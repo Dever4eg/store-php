@@ -27,12 +27,9 @@ $router->add('get', '/details', function () {
         ->display();
 });
 
-$router->add('get', '/cart', function () {
-    (new View("cart"))->display();
-});
-
-
+$router->add('get', '/cart', [new View("cart"), 'display']);
 $router->add('get', '/test', [new Controllers\TestController, 'index']);
+
 $router->add('get', '/login', function() {
     echo "login page";
 });
