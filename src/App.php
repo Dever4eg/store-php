@@ -24,7 +24,12 @@ class App
 
     public static function run()
     {
+
         self::addSystemComponents();
+
+        $err_handler = new ErrorHandler();
+        $err_handler->register();
+        $err_handler->setDebugMode(true);
 
         require_once APP_PATH . "/routes/web.php";
 
