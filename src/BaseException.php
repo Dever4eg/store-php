@@ -8,8 +8,9 @@
 
 namespace src;
 
+use Exception;
 
-class BaseException
+class BaseException extends Exception
 {
 
 }

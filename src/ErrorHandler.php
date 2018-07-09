@@ -44,9 +44,10 @@ class ErrorHandler
             echo "<p>" .  $message . "</p>";
             echo "<p>" .  $file . ":" . $line . "</p>";
             die;
+        } else {
+            // TODO: logging
         }
 
-        // TODO: logging
 
         return true;
     }
