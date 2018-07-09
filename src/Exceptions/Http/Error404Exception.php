@@ -6,7 +6,7 @@
  * Time: 16:53
  */
 
-namespace src\Http\Exceptions;
+namespace src\Exceptions\Http;
 
 
 class Error404Exception extends HttpException

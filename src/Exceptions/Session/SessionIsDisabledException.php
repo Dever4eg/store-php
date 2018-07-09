@@ -6,7 +6,7 @@
  * Time: 14:53
  */
 
-namespace src\Session\Exceptions;
+namespace src\Exceptions\Session;
 
 
 class SessionIsDisabledException extends SessionException

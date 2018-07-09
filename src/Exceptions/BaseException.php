@@ -6,7 +6,7 @@
  * Time: 12:38
  */
 
-namespace src;
+namespace src\Exceptions;
 
 use Exception;
 

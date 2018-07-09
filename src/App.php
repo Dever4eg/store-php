@@ -10,13 +10,15 @@ namespace Src;
 
 
 use Src\App\AppSingleComponent;
-use src\Http\Exceptions\Error404Exception;
+use src\Exceptions\Http\Error404Exception;
 use Src\Routing\Router;
+use Src\Session;
 
 /**
  * Class App
  * @package Src
  * @method static Router getRouter()
+ * @method static Session getSession()
  */
 class App
 {
@@ -47,7 +49,8 @@ class App
     protected static function addSystemComponents()
     {
         self::$components = array_merge(self::$components, [
-            'Router'        =>  Router::class,
+            'Router'        => Router::class,
+            'Session'       => Session::class,
         ]);
     }
 

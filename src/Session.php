@@ -6,18 +6,20 @@
  * Time: 22:45
  */
 
-namespace Src\Session;
+namespace Src;
 
 
-use Src\Traits\Singleton;
-use src\Session\Exceptions\SessionAlreadyRunException;
-use src\Session\Exceptions\SessionCanNotStartException;
-use src\Session\Exceptions\SessionIsDisabledException;
-use src\Session\Exceptions\SessionNotExistException;
+use Src\App\AppSingleComponent;
+use src\Exceptions\Session\SessionAlreadyRunException;
+use src\Exceptions\Session\SessionCanNotStartException;
+use src\Exceptions\Session\SessionIsDisabledException;
+use src\Exceptions\Session\SessionNotExistException;
 
-class Session
+class Session implements AppSingleComponent
 {
-    use Singleton;
+    public function __construct()
+    {
+    }
 
     public function sessionExist()
     {

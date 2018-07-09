@@ -3,15 +3,15 @@
  * Created by PhpStorm.
  * User: phpuser
  * Date: 09.07.18
- * Time: 14:01
+ * Time: 16:52
  */
 
-namespace src\Session\Exceptions;
+namespace src\Exceptions\Http;
 
 
 use src\BaseException;
 
-class SessionException extends BaseException
+class HttpException extends BaseException
 {
 
 }

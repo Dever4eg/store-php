@@ -6,7 +6,7 @@
  * Time: 15:07
  */
 
-namespace src\Session\Exceptions;
+namespace src\Exceptions\Session;
 
 
 class SessionAlreadyRunException extends SessionException
