@@ -9,6 +9,7 @@
 namespace Src\Routing;
 
 use Src\App\AppSingleComponent;
+use Src\Http\Exceptions\Error404Exception;
 
 class Router implements AppSingleComponent
 {
@@ -37,12 +38,13 @@ class Router implements AppSingleComponent
         if(!empty($this->match))
             return $this->match;
 
-        foreach ($this->getAll() as &$route)
-            if($route->match())
+        foreach ($this->getAll() as &$route) {
+            if ($route->match()) {
                 return ($this->match = $route);
+            }
+        }
 
-        // TODO: 404 error
-        die('404 error');
+        throw new Error404Exception();
     }
 
 

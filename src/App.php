@@ -10,6 +10,7 @@ namespace Src;
 
 
 use Src\App\AppSingleComponent;
+use src\Http\Exceptions\Error404Exception;
 use Src\Routing\Router;
 
 /**
@@ -24,11 +25,21 @@ class App
 
     public static function run()
     {
+
         self::addSystemComponents();
+
+        $err_handler = new ErrorHandler();
+        $err_handler->register();
+        $err_handler->setDebugMode(true);
+
 
         require_once APP_PATH . "/routes/web.php";
 
-        $handler = self::getRouter()->getHandler();
+        try {
+            $handler = self::getRouter()->getHandler();
+        } catch (Error404Exception $e) {
+            echo "404 error. Page not found";
+        }
 
         $handler();
     }
