@@ -17,14 +17,20 @@ class View
     protected $twig;
 
     protected $path = APP_PATH . '/views';
+    protected $extension = "twig";
 
+    /**
+     * View constructor.
+     * @param $view
+     * @return self
+     */
     public function __construct($view)
     {
-        $this->view = $view;
+        $this->view = $view . '.' . $this->extension;
 
         $loader = new \Twig_Loader_Filesystem($this->path);
         $this->twig = new \Twig_Environment($loader, array(
-            'cache' => BASE_PATH . '/var/cache/twig',
+//            'cache' => BASE_PATH . '/var/cache/twig',
         ));
 
         return $this;
@@ -46,7 +52,7 @@ class View
 
     public function render()
     {
-        return $this->twig->render($this->name, $this->params);
+        return $this->twig->render($this->view, $this->params);
     }
 
     public function display()

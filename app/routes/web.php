@@ -10,13 +10,10 @@ use App\Controllers;
 $router = \Src\App::getRouter();
 
 $router->add('get', '/', function () {
-    ob_start();
-
     $products = require APP_PATH . '/products_data.php';
-    require APP_PATH . '/views/main.php';
-
-    $content = ob_get_clean();
-    require APP_PATH . "/views/layout.php";
+    (new \Src\View("main") )
+        ->withParam("products", $products)
+        ->display();
 });
 
 $router->add('get', '/details', function () {
@@ -29,7 +26,7 @@ $router->add('get', '/details', function () {
     require APP_PATH . '/views/product.php';
 
     $content = ob_get_clean();
-    require APP_PATH . "/views/layout.php";
+    require APP_PATH . "/views/layout.twig";
 });
 
 $router->add('get', '/cart', function () {
@@ -38,7 +35,7 @@ $router->add('get', '/cart', function () {
     require APP_PATH . '/views/cart.php';
 
     $content = ob_get_clean();
-    require APP_PATH . "/views/layout.php";
+    require APP_PATH . "/views/layout.twig";
 });
 
 
