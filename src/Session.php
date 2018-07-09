@@ -18,16 +18,31 @@ class Session
     public $name;
     public $id;
 
+    public function sessionExist()
+    {
+        switch (session_status()){
+            case PHP_SESSION_ACTIVE:
+                return true;
+                break;
+            case PHP_SESSION_NONE:
+                return false;
+                break;
+            case PHP_SESSION_DISABLED:
+                throw new \Exception("Session disabled");
+                break;
+        }
+    }
+
     public function getName()
     {
-        if(session_status() !== PHP_SESSION_ACTIVE)
+        if(!$this->sessionExist())
             throw new \Exception("session does not start");
         return session_name();
     }
 
     public function setName($name)
     {
-        if(session_status() !== PHP_SESSION_NONE)
+        if($this->sessionExist())
             throw new \Exception("Session already start");
         session_name($name);
         return $this;
@@ -35,7 +50,10 @@ class Session
 
     public function start()
     {
-        session_start();
+        if ($this->sessionExist())
+            return $this;
+        if(!session_start())
+            throw new \Exception("session dont start");
         return $this;
     }
 }

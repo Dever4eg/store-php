@@ -7,12 +7,16 @@ const APP_PATH = __DIR__ . "/../app";
 //\Src\App::run();
 
 try {
-    $name = \Src\Session::instance()
-        ->setName("MY_SESSION")
-        ->start()
-        ->getName();
+    $session = \Src\Session::instance();
+
+    var_dump($session->sessionExist());
+
+    $session->start();
+
+    var_dump($session->sessionExist());
+
+
 } catch (Exception $e) {
     var_dump($e);
 }
 
-echo $name;
