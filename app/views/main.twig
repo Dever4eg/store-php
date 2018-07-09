@@ -15,7 +15,7 @@
                     <img class="card-img-top " src="https://cnet2.cbsistatic.com/img/hjo7_UY6ykIh_9cfttUZYaiF7V0=/770x433/2017/06/21/39c814c4-4909-43e8-aa0d-89eff3aced37/apple-macbook-12-inch-2017-01.jpg">
                     <div class="card-body">
                         <h5 class="card-title"> {{ item['name'] }} </h5>
-                        <p>{{ item['description'] }}</p>
+                        <p>{{ item['description']|raw }}</p>
                     </div>
                     <div class="card-footer">
                         <a href="details?id={{ key }}" class="btn btn-default">Details</a>
