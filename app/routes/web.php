@@ -6,43 +6,30 @@
  */
 
 use App\Controllers;
+use Src\View;
 
 $router = \Src\App::getRouter();
 
 $router->add('get', '/', function () {
-    ob_start();
-
     $products = require APP_PATH . '/products_data.php';
-    require APP_PATH . '/views/main.php';
-
-    $content = ob_get_clean();
-    require APP_PATH . "/views/layout.php";
+    (new View("main") )
+        ->withParam("products", $products)
+        ->display();
 });
 
 $router->add('get', '/details', function () {
-    ob_start();
-
 
     $products = require APP_PATH . '/products_data.php';
     $product = $products[$_GET['id']];
 
-    require APP_PATH . '/views/product.php';
-
-    $content = ob_get_clean();
-    require APP_PATH . "/views/layout.php";
+    (new View("product"))
+        ->withParam("product", $product)
+        ->display();
 });
 
-$router->add('get', '/cart', function () {
-    ob_start();
-
-    require APP_PATH . '/views/cart.php';
-
-    $content = ob_get_clean();
-    require APP_PATH . "/views/layout.php";
-});
-
-
+$router->add('get', '/cart', [new View("cart"), 'display']);
 $router->add('get', '/test', [new Controllers\TestController, 'index']);
+
 $router->add('get', '/login', function() {
     echo "login page";
 });
