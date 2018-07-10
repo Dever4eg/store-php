@@ -12,13 +12,13 @@ namespace Src;
 use Src\App\AppSingleComponent;
 use src\Exceptions\Http\Error404Exception;
 use Src\Routing\Router;
-use Src\Session;
 
 /**
  * Class App
  * @package Src
  * @method static Router getRouter()
  * @method static Session getSession()
+ * @method static Config getConfig()
  */
 class App
 {
@@ -27,11 +27,13 @@ class App
 
     public static function run()
     {
-
         self::addSystemComponents();
 
         $err_handler = new ErrorHandler();
         $err_handler->register();
+
+        $debug = self::getConfig()->get("debug");
+
         $err_handler->setDebugMode(true);
 
 
@@ -51,6 +53,7 @@ class App
         self::$components = array_merge(self::$components, [
             'Router'        => Router::class,
             'Session'       => Session::class,
+            'Config'        => Config::class,
         ]);
     }
 
