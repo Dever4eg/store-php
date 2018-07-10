@@ -12,6 +12,7 @@ namespace Src;
 use Src\App\AppSingleComponent;
 use src\Exceptions\Http\Error404Exception;
 use Src\Routing\Router;
+use Src\Logging\Logger;
 
 /**
  * Class App
@@ -19,6 +20,7 @@ use Src\Routing\Router;
  * @method static Router getRouter()
  * @method static Session getSession()
  * @method static Config getConfig()
+ * @method static Logger getLogger()
  */
 class App
 {
@@ -54,6 +56,7 @@ class App
             'Router'        => Router::class,
             'Session'       => Session::class,
             'Config'        => Config::class,
+            'Logger'        => Logger::class,
         ]);
     }
 
