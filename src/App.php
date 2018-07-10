@@ -34,7 +34,7 @@ class App
 
         $debug = self::getConfig()->get("debug");
 
-        $err_handler->setDebugMode(true);
+        $err_handler->setDebugMode($debug);
 
 
         require_once APP_PATH . "/routes/web.php";

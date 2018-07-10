@@ -17,8 +17,12 @@ class Config implements AppSingleComponent
 
     public function __construct()
     {
-        array_merge($this->params, require APP_PATH . '/configs/app.php');
+        $this->params = array_merge($this->params, require APP_PATH . '/configs/app.php');
+    }
 
+    public function getAll()
+    {
+        return $this->params;
     }
 
     public function get($name)
