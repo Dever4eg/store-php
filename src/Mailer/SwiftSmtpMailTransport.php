@@ -29,8 +29,14 @@ class SwiftSmtpMailTransport implements MailTransportInterface
         // Create a message
         $message = (new \Swift_Message( $mail->getSubject() ) )
             ->setTo([$mail->getRecipient()])
+            ->setFrom([$mail->getFrom()])
             ->setBody($mail->getMessage())
         ;
+
+        $headers = $message->getHeaders();
+        foreach ($mail->getHeaders() as $key => $header) {
+            $headers->addTextHeader($key, $header);
+        }
 
         // Send the message
         return $mailer->send($message);

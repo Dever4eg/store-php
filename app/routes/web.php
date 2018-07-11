@@ -39,23 +39,25 @@ $router->add('post', '/login', function() {
 
 
 $router->add('get', '/mail', function () {
-    $mailer = new \Src\Mailer\Mailer(
-        new \Src\Mailer\SwiftSmtpMailTransport(
-            "email-smtp.us-east-1.amazonaws.com",
-            25,
-            "AKIAJOOJ2CPOLXELNZAQ",
-            "AnZz+pp04NC6qabNROA2mpbHFGU+vwLhV2tp23jBpacy"
-        )
+
+    $transport = new \Src\Mailer\SwiftSmtpMailTransport(
+        "10.10.0.114",
+        2525,
+        "",
+        ""
     );
 
-    $vardumpMailer = new \Src\Mailer\VarDumpMailTransport();
+//    $transport = new \Src\Mailer\VarDumpMailTransport();
+
+    $mailer = new \Src\Mailer\Mailer($transport);
 
     $mail = new \Src\Mailer\Mail(
         "Test mail",
         "Message of test mail",
-        "dever4eg@gmail.com"
+        "dever4eg@gmail.com",
+        "dever4eg@gmail.com",
+        ['EXTERNAL' => 1]
     );
 
-//    $mailer->send($mail);
-    $vardumpMailer->send($mail);
+    $mailer->send($mail);
 });

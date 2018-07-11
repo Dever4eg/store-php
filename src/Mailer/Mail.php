@@ -14,13 +14,15 @@ class Mail implements MailInterface
     protected $subject;
     protected $message;
     protected $recipient;
+    protected $from;
     protected $headers = [];
 
-    public function __construct($subject, $message, $recipient, $headers = [])
+    public function __construct($subject, $message, $recipient, $from, array $headers = [])
     {
         $this->subject = $subject;
         $this->message = $message;
         $this->recipient = $recipient;
+        $this->from = $from;
         $this->headers = $headers;
     }
 
@@ -42,5 +44,10 @@ class Mail implements MailInterface
     public function getHeaders()
     {
         return $this->headers;
+    }
+
+    public function getFrom()
+    {
+        return $this->from;
     }
 }

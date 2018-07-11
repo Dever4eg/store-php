@@ -11,10 +11,11 @@ namespace Src\Mailer;
 
 interface MailInterface
 {
-    public function __construct($subject, $message, $recipient, $headers = []);
+    public function __construct($subject, $message, $recipient, $from, array $headers = []);
 
     public function getSubject();
     public function getMessage();
     public function getRecipient();
     public function getHeaders();
+    public function getFrom();
 }
