@@ -6,10 +6,10 @@
  * Time: 14:01
  */
 
-namespace src\Exceptions\Session;
+namespace Src\Exceptions\Session;
 
 
-use src\Exceptions\BaseException;
+use Src\Exceptions\BaseException;
 
 class SessionException extends BaseException
 {

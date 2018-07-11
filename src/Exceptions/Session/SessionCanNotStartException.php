@@ -6,7 +6,7 @@
  * Time: 15:25
  */
 
-namespace src\Exceptions\Session;
+namespace Src\Exceptions\Session;
 
 
 class SessionCanNotStartException extends SessionException
