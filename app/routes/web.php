@@ -34,5 +34,19 @@ $router->add('get', '/login', function() {
     echo "login page";
 });
 $router->add('post', '/login', function() {
-    echo "logining";
+    $auth = new \Src\Authorization\Auth();
+    if($auth->auth()) {
+        header('Location: /home');
+    } else {
+        header('Location: /');
+    }
+});
+
+$router->add('get', '/home', function() {
+    $auth = new \Src\Authorization\Auth();
+    if(!$auth->isAuth()) {
+        die('not auth');
+    }
+    echo "home";
+
 });
