@@ -36,28 +36,3 @@ $router->add('get', '/login', function() {
 $router->add('post', '/login', function() {
     echo "logining";
 });
-
-
-$router->add('get', '/mail', function () {
-
-    $transport = new \Src\Mailer\SwiftSmtpMailTransport(
-        "10.10.0.114",
-        2525,
-        "",
-        ""
-    );
-
-//    $transport = new \Src\Mailer\VarDumpMailTransport();
-
-    $mailer = new \Src\Mailer\Mailer($transport);
-
-    $mail = new \Src\Mailer\Mail(
-        "Test mail",
-        "Message of test mail",
-        "dever4eg@gmail.com",
-        "dever4eg@gmail.com",
-        ['EXTERNAL' => 1]
-    );
-
-    $mailer->send($mail);
-});
