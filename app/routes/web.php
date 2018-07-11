@@ -36,3 +36,26 @@ $router->add('get', '/login', function() {
 $router->add('post', '/login', function() {
     echo "logining";
 });
+
+
+$router->add('get', '/mail', function () {
+    $mailer = new \Src\Mailer\Mailer(
+        new \Src\Mailer\SwiftSmtpMailTransport(
+            "email-smtp.us-east-1.amazonaws.com",
+            25,
+            "AKIAJOOJ2CPOLXELNZAQ",
+            "AnZz+pp04NC6qabNROA2mpbHFGU+vwLhV2tp23jBpacy"
+        )
+    );
+
+    $vardumpMailer = new \Src\Mailer\VarDumpMailTransport();
+
+    $mail = new \Src\Mailer\Mail(
+        "Test mail",
+        "Message of test mail",
+        "dever4eg@gmail.com"
+    );
+
+//    $mailer->send($mail);
+    $vardumpMailer->send($mail);
+});
