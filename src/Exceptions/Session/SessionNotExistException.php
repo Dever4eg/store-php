@@ -6,7 +6,7 @@
  * Time: 15:05
  */
 
-namespace src\Exceptions\Session;
+namespace Src\Exceptions\Session;
 
 
 class SessionNotExistException extends SessionException

@@ -10,10 +10,10 @@ namespace Src;
 
 
 use Src\App\AppSingleComponent;
-use src\Exceptions\Session\SessionAlreadyRunException;
-use src\Exceptions\Session\SessionCanNotStartException;
-use src\Exceptions\Session\SessionIsDisabledException;
-use src\Exceptions\Session\SessionNotExistException;
+use Src\Exceptions\Session\SessionAlreadyRunException;
+use Src\Exceptions\Session\SessionCanNotStartException;
+use Src\Exceptions\Session\SessionIsDisabledException;
+use Src\Exceptions\Session\SessionNotExistException;
 
 class Session implements AppSingleComponent
 {
@@ -38,14 +38,7 @@ class Session implements AppSingleComponent
 
     public function cookieExist()
     {
-        try {
-            return isset($_COOKIE[$this->getName()]);
-        } catch (SessionNotExistException $e) {
-            if(isset($_COOKIE['PHPSESSID'])) {
-                return true;
-            }
-            throw $e;
-        }
+        return isset($_COOKIE[$this->getName() ?? 'PHPSESSID']);
     }
 
     public function getName()
@@ -57,9 +50,9 @@ class Session implements AppSingleComponent
 
     public function setName($name)
     {
-        if($this->sessionExist())
-            throw new SessionAlreadyRunException("Sou can set the name only before the session start");
-        session_name($name);
+        if(!$this->sessionExist()) {
+            session_name($name);
+        }
         return $this;
     }
 
@@ -72,9 +65,9 @@ class Session implements AppSingleComponent
 
     public function setId($id)
     {
-        if($this->sessionExist())
-            throw new SessionAlreadyRunException("Sou can set the id only before the session start");
-        session_id($id);
+        if(!$this->sessionExist()) {
+            session_id($id);
+        }
         return $this;
     }
 
