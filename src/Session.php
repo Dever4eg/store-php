@@ -17,6 +17,11 @@ use Src\Exceptions\Session\SessionNotExistException;
 
 class Session implements AppSingleComponent
 {
+    protected $name;
+    protected $id;
+    protected $save_path;
+    protected $handler;
+
     public function __construct()
     {
     }
@@ -43,14 +48,19 @@ class Session implements AppSingleComponent
 
     public function getName()
     {
-        if(!$this->sessionExist())
-            throw new SessionNotExistException("Session does not start");
+        if(!$this->sessionExist()) {
+            if (!empty($this->name)) {
+                return $this->name;
+                throw new SessionNotExistException("Session does not start");
+            }
+        }
         return session_name();
     }
 
     public function setName($name)
     {
         if(!$this->sessionExist()) {
+            $this->name = $name;
             session_name($name);
         }
         return $this;
@@ -58,14 +68,19 @@ class Session implements AppSingleComponent
 
     public function getId()
     {
-        if(!$this->sessionExist())
+        if(!$this->sessionExist()) {
+            if (!empty($this->id)) {
+                return $this->id;
+            }
             throw new SessionNotExistException("Session does not start");
+        }
         return session_id();
     }
 
     public function setId($id)
     {
         if(!$this->sessionExist()) {
+            $this->id = $id;
             session_id($id);
         }
         return $this;
@@ -76,6 +91,7 @@ class Session implements AppSingleComponent
         if($this->sessionExist()) {
             throw new SessionAlreadyRunException("Sou can set the save path only before the session start");
         }
+        $this->save_path = $path;
         session_save_path($path);
         return $this;
     }
@@ -144,6 +160,7 @@ class Session implements AppSingleComponent
         if(!session_set_save_handler ( $sessionHandler)) {
             throw new \Exception("session handler does not changed");
         }
+        $this->handler = $sessionHandler;
         return $this;
     }
 }

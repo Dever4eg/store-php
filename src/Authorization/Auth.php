@@ -18,8 +18,11 @@ class Auth
     public function isAuth()
     {
         $session = App::getSession()
-            ->setName($this->session_name)
-            ->start();
+            ->setName($this->session_name);
+        if(!$session->cookieExist()) {
+            return false;
+        }
+        $session->start();
 
         if(!$session->contains('login') || !$session->contains('password')) {
             return false;
