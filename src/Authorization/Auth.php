@@ -13,12 +13,9 @@ use Src\App;
 
 class Auth
 {
-    public $session_name = "STORE_AUTH";
-
     public function isAuth()
     {
-        $session = App::getSession()
-            ->setName($this->session_name);
+        $session = App::getSession();
         if(!$session->cookieExist()) {
             return false;
         }
@@ -46,7 +43,6 @@ class Auth
             return false;
         }
         App::getSession()
-            ->setName($this->session_name)
             ->start()
             ->set("login", $login)
             ->set('password', $password);
