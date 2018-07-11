@@ -41,11 +41,13 @@ class App
 
         try {
             $handler = self::getRouter()->getHandler();
+
+            $handler();
+
         } catch (Error404Exception $e) {
             echo "404 error. Page not found";
         }
 
-        $handler();
     }
 
     protected static function addSystemComponents()
