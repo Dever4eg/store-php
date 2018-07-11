@@ -9,7 +9,7 @@
 namespace Src\Routing;
 
 use Src\App\AppSingleComponent;
-use Src\Http\Exceptions\Error404Exception;
+use Src\Exceptions\Http\Error404Exception;
 
 class Router implements AppSingleComponent
 {

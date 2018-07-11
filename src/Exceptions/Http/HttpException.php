@@ -6,10 +6,10 @@
  * Time: 16:52
  */
 
-namespace src\Exceptions\Http;
+namespace Src\Exceptions\Http;
 
 
-use src\BaseException;
+use Src\Exceptions\BaseException;
 
 class HttpException extends BaseException
 {
