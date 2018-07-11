@@ -11,6 +11,7 @@ use Src\View;
 $router = \Src\App::getRouter();
 
 $router->add('get', '/', function () {
+    \Src\App::getLogger()->log("HTTP GET /");
     $products = require APP_PATH . '/products_data.php';
     (new View("main") )
         ->withParam("products", $products)
