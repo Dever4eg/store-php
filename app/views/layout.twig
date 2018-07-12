@@ -31,9 +31,21 @@
             </ul>
 
             <ul class="navbar-nav float-right">
-                <li class="nav-item">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login-modal">Login</button>
-                </li>
+
+                    {% if not getAuthLogin() %}
+                        <li class="nav-item">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login-modal">Login</button>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <span class="navbar-text mr-sm-2">Hello, {{ getAuthLogin() }}</span>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/logout" class="btn btn-primary">logout</a>
+                        </li>
+
+                    {% endif %}
+
             </ul>
 
             <!--<button class="btn" type="submit">Log in</button>-->
@@ -75,12 +87,12 @@
 
                     <div class="form-group">
                         <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter email">
+                        <input type="email" class="form-control" id="email" name="login" placeholder="Enter email">
                     </div>
 
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter password">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter password">
                     </div>
 
                 </div>

@@ -11,6 +11,7 @@ use Src\View;
 $router = \Src\App::getRouter();
 
 $router->add('get', '/', function () {
+    \Src\App::getLogger()->log("HTTP GET /");
     $products = require APP_PATH . '/products_data.php';
     (new View("main") )
         ->withParam("products", $products)
@@ -34,5 +35,24 @@ $router->add('get', '/login', function() {
     echo "login page";
 });
 $router->add('post', '/login', function() {
-    echo "logining";
+    $auth = new \Src\Authorization\Auth();
+    if($auth->auth()) {
+        header('Location: /');
+    } else {
+        header('Location: /');
+    }
+});
+
+$router->add('get', '/home', function() {
+    $auth = new \Src\Authorization\Auth();
+    if(!$auth->isAuth()) {
+        die('not auth');
+    }
+    echo "home/<br>Hello, ". $auth->getLogin();
+
+});
+
+$router->add('get', '/logout', function () {
+    (new \Src\Authorization\Auth())->logout();
+    header('Location: /');
 });

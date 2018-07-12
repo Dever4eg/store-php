@@ -2,5 +2,7 @@
 
 return [
     "debug"         => true,
-    "log"           => false,
+
+    "log_errors"    => false,
+    "log_path"      => BASE_PATH . '/var/logs/app.log'
 ];

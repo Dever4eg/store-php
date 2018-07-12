@@ -9,6 +9,8 @@
 namespace Src;
 
 
+use Src\Authorization\Auth;
+
 class View
 {
     protected $view;
@@ -32,6 +34,11 @@ class View
         $this->twig = new \Twig_Environment($loader, array(
 //            'cache' => BASE_PATH . '/var/cache/twig',
         ));
+
+
+        $this->twig->addFunction( new \Twig_SimpleFunction('getAuthLogin', function() {
+            return (new Auth())->getLogin();
+        }));
 
         return $this;
     }
