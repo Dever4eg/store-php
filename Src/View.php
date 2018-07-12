@@ -10,6 +10,7 @@ namespace Src;
 
 
 use Src\Authorization\Auth;
+use Zend\Diactoros\Response\HtmlResponse;
 
 class View
 {
@@ -69,5 +70,10 @@ class View
     public function display()
     {
         echo $this->render();
+    }
+
+    public function getHtmlResponse()
+    {
+        return new HtmlResponse($this->render());
     }
 }

@@ -8,6 +8,8 @@
 
 namespace Src\Routing;
 
+use Psr\Http\Message\RequestInterface;
+
 class Route
 {
     public $method;
@@ -23,13 +25,8 @@ class Route
         $this->name = $name;
     }
 
-    public function match() : bool
+    public function match(RequestInterface $request) : bool
     {
-        $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $method = $_SERVER['REQUEST_METHOD'];
-
-        if($this->url == $url && $this->method == $method)
-            return true;
-        return false;
+        return $this->url == $request->getUri()->getPath() && $this->method == $request->getMethod();
     }
 }

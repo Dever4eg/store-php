@@ -9,11 +9,15 @@
 namespace Src;
 
 
+use Psr\Http\Message\ResponseInterface;
 use Src\App\AppSingleComponent;
 use src\Exceptions\Http\Error404Exception;
 use Src\Routing\Router;
 use Src\Logging\Logger;
 use Src\Session\Session;
+use Zend\Diactoros\Response\HtmlResponse;
+use Zend\Diactoros\ServerRequestFactory;
+use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
 
 /**
  * Class App
@@ -34,21 +38,27 @@ class App
 
         $err_handler = new ErrorHandler();
         $err_handler->register();
+        $err_handler->setDebugMode(self::getConfig()->get("debug"));
 
-        $debug = self::getConfig()->get("debug");
-
-        $err_handler->setDebugMode($debug);
-
+        $request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
 
         require_once APP_PATH . "/routes/web.php";
 
         try {
-            $handler = self::getRouter()->getHandler();
+            $match = self::getRouter()->getMatch($request);
 
-            $handler();
+            $response = ($match->handler)($request);
+
+            if($response instanceof ResponseInterface) {
+                (new SapiEmitter)->emit($response);
+            }
 
         } catch (Error404Exception $e) {
-            echo $e->message;
+            $response = new HtmlResponse($e->message);
+        } finally {
+            if($response instanceof ResponseInterface) {
+                (new SapiEmitter)->emit($response);
+            }
         }
 
     }

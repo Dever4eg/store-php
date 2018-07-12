@@ -26,29 +26,12 @@ class Auth
             return false;
         }
 
-//        return $this->checkToken($session->get('login'), $session->get('token'));
         return $session->get('login');
     }
 
-    public function auth()
+    public function auth($login)
     {
-        if(empty($_REQUEST['login']) || empty($_REQUEST['password'])) {
-            return false;
-        }
-
-        $login = $_REQUEST['login'];
-        $password = sha1($_REQUEST['password']);
-
-        $session = App::getSession();
-
-
-        if(!$this->checkUserData($login, $password)) {
-            $session->setFlashMessage(new FlashMessage('error', 'Login failed', 'Login or password is invalid'));
-            return false;
-        }
-
-        $session->start()
-            ->setFlashMessage(new FlashMessage('success', 'Login success', 'You are logged in'))
+        App::getSession()->start()
             ->set("login", $login);
         return true;
     }
@@ -65,16 +48,5 @@ class Auth
             return false;
         }
         return App::getSession()->get('login');
-    }
-
-    protected function checkUserData($login, $password)
-    {
-        $user = [
-
-            'login'     => "admin@admin.com",
-            'password'  =>  sha1("password"),
-        ];
-
-        return ($login == $user['login'] && $password == $user['password']);
     }
 }
