@@ -8,7 +8,7 @@
 
 namespace Src\Routing;
 
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Src\App\AppSingleComponent;
 use Src\Exceptions\Http\Error404Exception;
 
@@ -19,6 +19,9 @@ class Router implements AppSingleComponent
     }
 
     protected $routes = [];
+    /**
+     * @var Route
+     */
     protected $match = null;
 
     public function add($method, $url, $handler, $name = null)
@@ -34,7 +37,12 @@ class Router implements AppSingleComponent
         return $this->routes;
     }
 
-    public function getMatch(RequestInterface $request)
+    /**
+     * @param ServerRequestInterface $request
+     * @return Route
+     * @throws Error404Exception
+     */
+    public function getMatch(ServerRequestInterface $request)
     {
         if(!empty($this->match)) {
             return $this->match;

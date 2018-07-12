@@ -35,9 +35,7 @@ class App
 
         $err_handler = new ErrorHandler();
         $err_handler->register();
-
-        $debug = self::getConfig()->get("debug");
-        $err_handler->setDebugMode($debug);
+        $err_handler->setDebugMode(self::getConfig()->get("debug"));
 
         $request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
 
