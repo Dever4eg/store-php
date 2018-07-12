@@ -26,7 +26,6 @@ class Auth
             return false;
         }
 
-//        return $this->checkToken($session->get('login'), $session->get('token'));
         return $session->get('login');
     }
 

@@ -9,7 +9,7 @@
 namespace App\Controllers;
 
 
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\RequestInterface;
 use Src\App;
 use Src\Authorization\Auth;
 use Src\Controller;
@@ -18,7 +18,7 @@ use Zend\Diactoros\Response\RedirectResponse;
 
 class AuthController extends Controller
 {
-    public function login(ServerRequestInterface $request)
+    public function login(RequestInterface $request)
     {
         $request = $request->getParsedBody();
 
@@ -46,7 +46,7 @@ class AuthController extends Controller
     public function logout()
     {
         (new \Src\Authorization\Auth())->logout();
-        header('Location: /');
+        return new RedirectResponse('/');
     }
 
     protected function checkUserData($login, $password)

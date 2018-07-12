@@ -15,6 +15,7 @@ use src\Exceptions\Http\Error404Exception;
 use Src\Routing\Router;
 use Src\Logging\Logger;
 use Src\Session\Session;
+use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
 
@@ -53,7 +54,11 @@ class App
             }
 
         } catch (Error404Exception $e) {
-            echo $e->message;
+            $response = new HtmlResponse($e->message);
+        } finally {
+            if($response instanceof ResponseInterface) {
+                (new SapiEmitter)->emit($response);
+            }
         }
 
     }

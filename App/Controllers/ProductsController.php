@@ -17,9 +17,9 @@ class ProductsController extends Controller
     public function index()
     {
         $products = require APP_PATH . '/products_data.php';
-        (new View("main") )
+        return (new View("main") )
             ->withParam("products", $products)
-            ->display();
+            ->getHtmlResponse();
     }
 
     public function show()
@@ -27,8 +27,8 @@ class ProductsController extends Controller
         $products = require APP_PATH . '/products_data.php';
         $product = $products[$_GET['id']];
 
-        (new View("product"))
+        return (new View("product"))
             ->withParam("product", $product)
-            ->display();
+            ->getHtmlResponse();
     }
 }
