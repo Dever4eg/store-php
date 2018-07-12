@@ -37,7 +37,7 @@ $router->add('get', '/login', function() {
 $router->add('post', '/login', function() {
     $auth = new \Src\Authorization\Auth();
     if($auth->auth()) {
-        header('Location: /home');
+        header('Location: /');
     } else {
         header('Location: /');
     }
