@@ -36,9 +36,9 @@ class App
     {
         self::addSystemComponents();
 
-        $err_handler = new ErrorHandler();
-        $err_handler->register();
-        $err_handler->setDebugMode(self::getConfig()->get("debug"));
+//        $err_handler = new ErrorHandler();
+//        $err_handler->register();
+//        $err_handler->setDebugMode(self::getConfig()->get("debug"));
 
         $request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
 
@@ -46,13 +46,7 @@ class App
 
         try {
             $match = self::getRouter()->getMatch($request);
-
             $response = ($match->handler)($request);
-
-            if($response instanceof ResponseInterface) {
-                (new SapiEmitter)->emit($response);
-            }
-
         } catch (Error404Exception $e) {
             $response = new HtmlResponse($e->message);
         } finally {
