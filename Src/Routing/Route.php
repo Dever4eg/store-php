@@ -8,7 +8,7 @@
 
 namespace Src\Routing;
 
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\RequestInterface;
 
 class Route
 {
@@ -25,7 +25,7 @@ class Route
         $this->name = $name;
     }
 
-    public function match(ServerRequestInterface $request) : bool
+    public function match(RequestInterface $request) : bool
     {
         return $this->url == $request->getUri()->getPath() && $this->method == $request->getMethod();
     }
