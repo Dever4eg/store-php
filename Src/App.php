@@ -16,6 +16,7 @@ use Src\Routing\Router;
 use Src\Logging\Logger;
 use Src\Session\Session;
 use Zend\Diactoros\ServerRequestFactory;
+use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
 
 /**
  * Class App
@@ -45,8 +46,11 @@ class App
         try {
             $match = self::getRouter()->getMatch($request);
 
-            ($match->handler)($request);
+            $response = ($match->handler)($request);
 
+            if($response instanceof ResponseInterface) {
+                (new SapiEmitter)->emit($response);
+            }
 
         } catch (Error404Exception $e) {
             echo $e->message;
