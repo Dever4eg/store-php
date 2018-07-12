@@ -13,6 +13,7 @@ use Src\App\AppSingleComponent;
 use src\Exceptions\Http\Error404Exception;
 use Src\Routing\Router;
 use Src\Logging\Logger;
+use Src\Session\Session;
 
 /**
  * Class App

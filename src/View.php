@@ -40,6 +40,10 @@ class View
             return (new Auth())->getLogin();
         }));
 
+        $this->twig->addFunction( new \Twig_SimpleFunction('getFlashMessages', function() {
+            return App::getSession()->getFlashMessages();
+        }));
+
         return $this;
     }
 

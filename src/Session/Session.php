@@ -6,14 +6,11 @@
  * Time: 22:45
  */
 
-namespace Src;
+namespace Src\Session;
 
 
 use Src\App\AppSingleComponent;
 use Src\Exceptions\Session\SessionAlreadyRunException;
-use Src\Exceptions\Session\SessionCanNotStartException;
-use Src\Exceptions\Session\SessionIsDisabledException;
-use Src\Exceptions\Session\SessionNotExistException;
 
 class Session implements AppSingleComponent
 {
@@ -28,64 +25,72 @@ class Session implements AppSingleComponent
 
     public function sessionExist()
     {
-        switch (session_status()){
-            case PHP_SESSION_ACTIVE:
-                return true;
-                break;
-            case PHP_SESSION_NONE:
-                return false;
-                break;
-            case PHP_SESSION_DISABLED:
-                throw new SessionIsDisabledException("Session disabled");
-                break;
-        }
+        return session_status() == PHP_SESSION_ACTIVE;
     }
 
     public function cookieExist()
     {
-        return isset($_COOKIE[$this->getName() ?? 'PHPSESSID']);
+        $name = $this->getName();
+        return isset($_COOKIE[$name ? $name : 'PHPSESSID']);
     }
 
     public function getName()
     {
-        if(!$this->sessionExist()) {
-            if (!empty($this->name)) {
-                return $this->name;
-                throw new SessionNotExistException("Session does not start");
-            }
+        if($this->sessionExist()) {
+            return session_name();
         }
-        return session_name();
+        if (!empty($this->name)) {
+            return $this->name;
+        }
+        return false;
     }
 
+    /**
+     * @param $name
+     * @return $this
+     * @throws SessionAlreadyRunException
+     */
     public function setName($name)
     {
-        if(!$this->sessionExist()) {
-            $this->name = $name;
-            session_name($name);
+        if($this->sessionExist()) {
+            throw new SessionAlreadyRunException("Sou can set the name only before the session start");
         }
+        $this->name = $name;
+        session_name($name);
         return $this;
     }
 
     public function getId()
     {
-        if(!$this->sessionExist()) {
-            if (!empty($this->id)) {
-                return $this->id;
-            }
-            throw new SessionNotExistException("Session does not start");
+        if($this->sessionExist()) {
+            return session_id();
         }
-        return session_id();
+        if (!empty($this->id)) {
+            return $this->id;
+        }
+        return false;
     }
 
+    /**
+     * @param $id
+     * @return $this
+     * @throws SessionAlreadyRunException
+     */
     public function setId($id)
     {
-        if(!$this->sessionExist()) {
-            $this->id = $id;
-            session_id($id);
+        if($this->sessionExist()) {
+            throw new SessionAlreadyRunException("Sou can set id only before the session start");
         }
+        $this->id = $id;
+        session_id($id);
         return $this;
     }
 
+    /**
+     * @param $path
+     * @return $this
+     * @throws SessionAlreadyRunException
+     */
     public function setSavePath($path)
     {
         if($this->sessionExist()) {
@@ -98,26 +103,27 @@ class Session implements AppSingleComponent
 
     public function start()
     {
-        if ($this->sessionExist())
+        if ($this->sessionExist()) {
             return $this;
-        if(!session_start())
-            throw new SessionCanNotStartException("session start exit with error");
-        return $this;
+        }
+
+        return session_start() ? $this : false;
     }
 
     public function destroy()
     {
-        if (!$this->sessionExist())
+        if (!$this->sessionExist()) {
             return false;
+        }
 
         $_SESSION = [];
-        session_destroy();
+        return session_destroy();
     }
 
     public function set($key, $value)
     {
         if(!$this->sessionExist()) {
-            throw new SessionNotExistException("You can set session params only after session start");
+            $this->start();
         }
         $_SESSION[$key] = $value;
         return $this;
@@ -126,7 +132,7 @@ class Session implements AppSingleComponent
     public function get($key)
     {
         if(!$this->sessionExist()) {
-            throw new SessionNotExistException("You can get session params only after session start");
+            $this->start();
         }
         if($this->contains($key)) {
             return $_SESSION[$key];
@@ -137,7 +143,7 @@ class Session implements AppSingleComponent
     public function delete($key)
     {
         if(!$this->sessionExist()) {
-            throw new SessionNotExistException("You can delete session params only after session start");
+            $this->start();
         }
         unset($_SESSION[$key]);
         return $this;
@@ -146,21 +152,41 @@ class Session implements AppSingleComponent
     public function contains($key)
     {
         if(!$this->sessionExist()) {
-            throw new SessionNotExistException("You can get access to session params only after session start");
+            $this->start();
         }
         return isset($_SESSION[$key]);
     }
 
 
+    /**
+     * @param \SessionHandlerInterface $sessionHandler
+     * @return $this
+     * @throws SessionAlreadyRunException
+     */
     public function setHandler(\SessionHandlerInterface $sessionHandler)
     {
         if($this->sessionExist()) {
             throw new SessionAlreadyRunException("Sou can set the handler only before the session start");
         }
-        if(!session_set_save_handler ( $sessionHandler)) {
-            throw new \Exception("session handler does not changed");
-        }
+        session_set_save_handler ( $sessionHandler );
+
         $this->handler = $sessionHandler;
         return $this;
+    }
+
+    public function setFlashMessage(FlashMessageInterface $value)
+    {
+        $messages = $this->get('flash') ?? [];
+        $messages[] = $value;
+        $this->set('flash', $messages);
+        return $this;
+    }
+
+
+    public function getFlashMessages()
+    {
+        $messages = $this->get('flash');
+        $this->delete('flash');
+        return $messages;
     }
 }
