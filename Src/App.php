@@ -9,6 +9,7 @@
 namespace Src;
 
 
+use Psr\Http\Message\ResponseInterface;
 use Src\App\AppSingleComponent;
 use src\Exceptions\Http\Error404Exception;
 use Src\Routing\Router;
@@ -44,7 +45,8 @@ class App
         try {
             $match = self::getRouter()->getMatch($request);
 
-            ($match->handler)();
+            ($match->handler)($request);
+
 
         } catch (Error404Exception $e) {
             echo $e->message;
