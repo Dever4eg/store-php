@@ -48,7 +48,7 @@ class App
             $handler();
 
         } catch (Error404Exception $e) {
-            echo "404 error. Page not found";
+            echo $e->message;
         }
 
     }
@@ -68,6 +68,7 @@ class App
         $interfaces = class_implements($class);
         return isset($interfaces[$interface]);
     }
+
 
     public static function __callStatic($name, $arguments)
     {

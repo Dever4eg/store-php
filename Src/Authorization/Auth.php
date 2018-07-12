@@ -27,7 +27,7 @@ class Auth
         }
 
 //        return $this->checkToken($session->get('login'), $session->get('token'));
-        return $this->checkUserData($session->get('login'), $session->get('password'));
+        return $session->get('login');
     }
 
     public function auth()
@@ -49,9 +49,7 @@ class Auth
 
         $session->start()
             ->setFlashMessage(new FlashMessage('success', 'Login success', 'You are logged in'))
-            ->set("login", $login)
-            ->set('password', $password);
-//            ->set("token", $this->getToken($password));
+            ->set("login", $login);
         return true;
     }
 
@@ -59,7 +57,6 @@ class Auth
     {
         $session = App::getSession()->start();
         $session->delete('login');
-        $session->delete('password');
     }
 
     public function getLogin()
@@ -80,19 +77,4 @@ class Auth
 
         return ($login == $user['login'] && $password == $user['password']);
     }
-
-    protected function checkToken($login, $token)
-    {
-
-    }
-
-    protected function getToken($password)
-    {
-        $user_agent = $_SERVER['HTTP_USER_AGENT'];
-        $user_addr = $_SERVER['REMOTE_ADDR'];
-
-        return sha1($password . $user_agent . $user_addr);
-    }
-
-
 }
