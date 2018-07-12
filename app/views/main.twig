@@ -1,0 +1,38 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+
+            {% for key, item in products %}
+
+                {# Группируем карточки по 3 в деку. Открываем тег на первую итерацию из каждой тройки #}
+                {% if key%3 == 0 %}
+                    <div class="card-deck">
+                {% endif %}
+
+                <div class="card">
+                    <img class="card-img-top " src="https://cnet2.cbsistatic.com/img/hjo7_UY6ykIh_9cfttUZYaiF7V0=/770x433/2017/06/21/39c814c4-4909-43e8-aa0d-89eff3aced37/apple-macbook-12-inch-2017-01.jpg">
+                    <div class="card-body">
+                        <h5 class="card-title"> {{ item['name'] }} </h5>
+                        <p>{{ item['description']|raw }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="details?id={{ key }}" class="btn btn-default">Details</a>
+                        <a href="#" class="btn btn-primary float-right">Buy</a>
+                    </div>
+                </div>
+
+                {# Закрываем тег на каждую третью итерацию или когда закончились карточки #}
+                {% if (key%3 == 2 or (key+1 == products|length) )  %}
+                    </div>
+                {% endif %}
+
+            {% else %}
+                <h4>Products is not exist</h4>
+            {% endfor %}
+
+        </div>
+    </div>
+
+{% endblock %}
