@@ -22,7 +22,7 @@ class Auth
         }
         $session->start();
 
-        if(!$session->contains('login') || !$session->contains('password')) {
+        if(!$session->contains('login')) {
             return false;
         }
 
