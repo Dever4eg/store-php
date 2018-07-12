@@ -14,6 +14,7 @@ use src\Exceptions\Http\Error404Exception;
 use Src\Routing\Router;
 use Src\Logging\Logger;
 use Src\Session\Session;
+use Zend\Diactoros\ServerRequestFactory;
 
 /**
  * Class App
@@ -36,16 +37,16 @@ class App
         $err_handler->register();
 
         $debug = self::getConfig()->get("debug");
-
         $err_handler->setDebugMode($debug);
 
+        $request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
 
         require_once APP_PATH . "/routes/web.php";
 
         try {
-            $handler = self::getRouter()->getHandler();
+            $match = self::getRouter()->getMatch($request);
 
-            $handler();
+            ($match->handler)();
 
         } catch (Error404Exception $e) {
             echo $e->message;
