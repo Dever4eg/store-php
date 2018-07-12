@@ -48,6 +48,11 @@ $router->add('get', '/home', function() {
     if(!$auth->isAuth()) {
         die('not auth');
     }
-    echo "home";
+    echo "home/<br>Hello, ". $auth->getLogin();
 
+});
+
+$router->add('get', '/logout', function () {
+    (new \Src\Authorization\Auth())->logout();
+    header('Location: /');
 });

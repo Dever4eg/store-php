@@ -52,12 +52,17 @@ class Auth
 
     public function logout()
     {
-
+        $session = App::getSession()->start();
+        $session->delete('login');
+        $session->delete('password');
     }
 
     public function getLogin()
     {
-
+        if(!$this->isAuth()) {
+            return false;
+        }
+        return App::getSession()->get('login');
     }
 
     protected function checkUserData($login, $password)
