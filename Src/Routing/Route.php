@@ -19,17 +19,50 @@ class Route
     public $name;
     protected $middleware = [];
 
-    public function __construct($method, $url, $handler, $name = null)
+    public function __construct($method, $url, $handler, array $params = null)
     {
         $this->method = strtoupper($method);
         $this->url = $url;
         $this->handler = $handler;
-        $this->name = $name;
+        if(!empty($params) && is_array($params)) {
+            $this->setParams($params);
+        }
     }
 
-    public function middleware(MiddlewareInterface $middleware)
+    public function setParams(array $params)
     {
-        $this->middleware[] = $middleware;
+        foreach ($params as $key => $param) {
+            switch (strtolower($key)) {
+                case "middleware":
+                    $this->setMiddleware($param);
+                    break;
+                case "name":
+                    $this->name = $param;
+                    break;
+            }
+        }
+    }
+
+
+    public function middleware($middleware)
+    {
+        $this->setMiddleware($middleware);
+    }
+
+    /**
+     * @param mixed|MiddlewareInterface|array  $middleware
+     * @return $this
+     */
+    public function setMiddleware($middleware)
+    {
+        if(is_array($middleware)) {
+            foreach ($middleware as $item) {
+                $this->middleware[] = $item;
+            }
+        } else {
+            $this->middleware[] = $middleware;
+        }
+
         return $this;
     }
 

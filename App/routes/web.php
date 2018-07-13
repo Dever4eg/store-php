@@ -8,20 +8,26 @@
 use App\Controllers;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use \Src\Routing\Router;
 use Src\View;
 
 $router = \Src\App::getRouter();
 
-$router->get('/', [new Controllers\ProductsController(), 'index']);
-$router->get('/details', [new Controllers\ProductsController(), 'show']);
-$router->get('/cart', [new View("cart"), 'getHtmlResponse']);
+$router->get('/',               [new Controllers\ProductsController(), 'index']);
+$router->get('/details',        [new Controllers\ProductsController(), 'show']);
+$router->get('/cart',           [new View("cart"), 'getHtmlResponse']);
 
-$router->get('/account', [new View("account"), 'getHtmlResponse'])
-    ->middleware(new \Src\Authorization\AuthMiddleware('/login'));
-$router->get('/logout', [new Controllers\AuthController(), 'logout'])
-    ->middleware(new \Src\Authorization\AuthMiddleware('/login'));
+$router->group(function (Router $router) {
 
-$router->get('/login', [new View("login"), 'getHtmlResponse'])
-    ->middleware(new \Src\Authorization\GuestMiddleware('/account'));
-$router->post('/login', [new Controllers\AuthController(), 'login'])
-    ->middleware(new \Src\Authorization\GuestMiddleware('/account'));
+    $router->get('/account',    [new View("account"), 'getHtmlResponse']);
+    $router->get('/logout',     [new Controllers\AuthController(), 'logout']);
+
+}, ['middleware' => [new \Src\Authorization\AuthMiddleware('/login')]]);
+
+
+$router->group(function (Router $router) {
+
+    $router->get('/login',      [new View("login"), 'getHtmlResponse']);
+    $router->post('/login',     [new Controllers\AuthController(), 'login']);
+
+}, ['middleware' => new \Src\Authorization\GuestMiddleware('/account')]);
