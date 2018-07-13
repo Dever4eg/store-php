@@ -18,8 +18,10 @@ $router->get('/cart', [new View("cart"), 'getHtmlResponse']);
 
 $router->get('/account', [new View("account"), 'getHtmlResponse'])
     ->middleware(new \Src\Authorization\AuthMiddleware('/login'));
+$router->get('/logout', [new Controllers\AuthController(), 'logout'])
+    ->middleware(new \Src\Authorization\AuthMiddleware('/login'));
+
 $router->get('/login', [new View("login"), 'getHtmlResponse'])
     ->middleware(new \Src\Authorization\GuestMiddleware('/account'));
-
-$router->post('/login', [new Controllers\AuthController(), 'login']);
-$router->get('/logout', [new Controllers\AuthController(), 'logout']);
+$router->post('/login', [new Controllers\AuthController(), 'login'])
+    ->middleware(new \Src\Authorization\GuestMiddleware('/account'));
