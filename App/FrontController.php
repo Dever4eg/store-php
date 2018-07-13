@@ -19,9 +19,6 @@ class FrontController extends BaseFrontController
      {
          require_once __DIR__ . "/routes/web.php";
 
-         $middleware = App::getMiddleware();
-         $middleware->register(new TestMiddleware());
-
          App::run();
      }
 

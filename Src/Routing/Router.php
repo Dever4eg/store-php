@@ -26,32 +26,32 @@ class Router implements AppSingleComponent
 
     public function add($method, $url, $handler, $name = null)
     {
-        $this->routes[] = new Route($method, $url, $handler, $name);
+        return $this->routes[] = new Route($method, $url, $handler, $name);
     }
 
     public function get($url, $handler, $name = null)
     {
-        $this->routes[] = new Route('get', $url, $handler, $name);
+        return $this->add('get', $url, $handler, $name);
     }
 
     public function post($url, $handler, $name = null)
     {
-        $this->routes[] = new Route('post', $url, $handler, $name);
+        return $this->add('post', $url, $handler, $name);
     }
 
     public function put($url, $handler, $name = null)
     {
-        $this->routes[] = new Route('put', $url, $handler, $name);
+        return $this->add('put', $url, $handler, $name);
     }
 
     public function patch($url, $handler, $name = null)
     {
-        $this->routes[] = new Route('patch', $url, $handler, $name);
+        return $this->add('patch', $url, $handler, $name);
     }
 
     public function delete($url, $handler, $name = null)
     {
-        $this->routes[] = new Route('delete', $url, $handler, $name);
+        return $this->add('delete', $url, $handler, $name);
     }
 
     /**

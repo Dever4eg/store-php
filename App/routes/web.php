@@ -12,7 +12,9 @@ use Src\View;
 
 $router = \Src\App::getRouter();
 
-$router->get('/', [new Controllers\ProductsController(), 'index']);
+$router->get('/', [new Controllers\ProductsController(), 'index'])
+    ->middleware(new \Src\Middleware\TestMiddleware());
+
 $router->get('/details', [new Controllers\ProductsController(), 'show']);
 $router->get('/cart', [new View("cart"), 'getHtmlResponse']);
 
