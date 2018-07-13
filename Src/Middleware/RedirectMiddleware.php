@@ -11,6 +11,7 @@ namespace Src\Middleware;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Src\Exceptions\Http\Error404Exception;
 use Zend\Diactoros\Response\RedirectResponse;
 
 class RedirectMiddleware implements MiddlewareInterface
@@ -30,10 +31,17 @@ class RedirectMiddleware implements MiddlewareInterface
         return new RedirectResponse($this->redirect_url, $this->status);
     }
 
+    /**
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @param $next
+     * @return RedirectResponse
+     * @throws Error404Exception
+     */
     public function handle(RequestInterface $request, ResponseInterface $response, $next)
     {
         if($this->status == 404) {
-            throw new Error404Exception;
+            throw new Error404Exception();
         }
         return $this->redirect();
     }
