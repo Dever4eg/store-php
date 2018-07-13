@@ -56,13 +56,10 @@ class Route
     public function setMiddleware($middleware)
     {
         if(is_array($middleware)) {
-            foreach ($middleware as $item) {
-                $this->middleware[] = $item;
-            }
+            $this->middleware = array_merge($this->middleware, $middleware);
         } else {
             $this->middleware[] = $middleware;
         }
-
         return $this;
     }
 

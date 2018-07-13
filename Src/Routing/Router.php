@@ -59,6 +59,9 @@ class Router implements AppSingleComponent
         $router = new Router();
         $callback($router);
 
+        if(empty($params)) {
+            return;
+        }
         foreach ($router->getAll() as $route) {
             $route->setParams($params);
             $this->routes[] = $route;

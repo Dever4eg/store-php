@@ -22,7 +22,7 @@ $router->group(function (Router $router) {
     $router->get('/account',    [new View("account"), 'getHtmlResponse']);
     $router->get('/logout',     [new Controllers\AuthController(), 'logout']);
 
-}, ['middleware' => [new \Src\Authorization\AuthMiddleware('/login')]]);
+}, ['middleware' => 'auth']);
 
 
 $router->group(function (Router $router) {
@@ -30,4 +30,4 @@ $router->group(function (Router $router) {
     $router->get('/login',      [new View("login"), 'getHtmlResponse']);
     $router->post('/login',     [new Controllers\AuthController(), 'login']);
 
-}, ['middleware' => new \Src\Authorization\GuestMiddleware('/account')]);
+}, ['middleware' => 'guest']);

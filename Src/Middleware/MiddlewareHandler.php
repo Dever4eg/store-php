@@ -18,21 +18,43 @@ class MiddlewareHandler implements AppSingleComponent
 {
     protected $queue = [];
     protected $handler;
+    protected $aliases = [];
 
     public function __construct()
     {
         $this->queue = new \SplQueue();
     }
 
-    public function register(MiddlewareInterface $middleware)
+    /**
+     * @param mixed|MiddlewareInterface|string $middleware
+     * @return bool
+     */
+    public function register($middleware)
     {
-        $this->queue->enqueue($middleware);
+        if($middleware instanceof MiddlewareInterface) {
+            $this->queue->enqueue($middleware);
+        } elseif(is_string($middleware) && isset($this->aliases[strtolower($middleware)])) {
+            $this->queue->enqueue($this->aliases[strtolower($middleware)]);
+        } else {
+            return false;
+        }
+        return true;
     }
 
     public function run(RequestInterface $request, callable $handler)
     {
         $this->handler = $handler;
         return $this->nextHandler($request, new Response(), [$this, 'nextHandler']);
+    }
+
+    public function setAliases($aliases)
+    {
+        $this->aliases = array_merge($this->aliases, $aliases);
+    }
+
+    public function setAlias($alias, $class)
+    {
+        $this->aliases[strtolower($alias)] = $class;
     }
 
 

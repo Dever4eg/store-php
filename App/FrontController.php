@@ -16,9 +16,14 @@ class FrontController extends BaseFrontController
 {
     public function run()
      {
-         require_once __DIR__ . "/routes/web.php";
+        require_once __DIR__ . "/routes/web.php";
 
-         App::run();
+        App::getMiddleware()->setAliases([
+            'auth'      => new \Src\Authorization\AuthMiddleware('/login'),
+            'guest'      => new \Src\Authorization\GuestMiddleware('/account'),
+        ]);
+
+        App::run();
      }
 
 }
