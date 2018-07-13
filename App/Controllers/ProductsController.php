@@ -16,7 +16,7 @@ class ProductsController extends Controller
 {
     public function index()
     {
-        $products = require APP_PATH . '/products_data.php';
+        $products = require APP_PATH . '/Models/products_data.php';
         return (new View("main") )
             ->withParam("products", $products)
             ->getHtmlResponse();
@@ -24,7 +24,7 @@ class ProductsController extends Controller
 
     public function show()
     {
-        $products = require APP_PATH . '/products_data.php';
+        $products = require APP_PATH . '/Models/products_data.php';
         $product = $products[$_GET['id']];
 
         return (new View("product"))
