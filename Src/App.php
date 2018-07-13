@@ -12,6 +12,8 @@ namespace Src;
 use Psr\Http\Message\ResponseInterface;
 use Src\App\AppSingleComponent;
 use src\Exceptions\Http\Error404Exception;
+use Src\Middleware\MiddlewareHandler;
+use Src\Middleware\TestMiddleware;
 use Src\Routing\Router;
 use Src\Logging\Logger;
 use Src\Session\Session;
@@ -26,6 +28,7 @@ use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
  * @method static Session getSession()
  * @method static Config getConfig()
  * @method static Logger getLogger()
+ * @method static MiddlewareHandler getMiddleware()
  */
 class App
 {
@@ -46,11 +49,16 @@ class App
 
         try {
             $match = self::getRouter()->getMatch($request);
-            $response = ($match->handler)($request);
+
+            $middleware = self::getMiddleware();
+            $middleware->register(new TestMiddleware());
+
+            $response = $middleware->run($request, $match->handler);
+
         } catch (Error404Exception $e) {
             $response = new HtmlResponse($e->message);
         } finally {
-            if($response instanceof ResponseInterface) {
+            if(isset($response ) && $response instanceof ResponseInterface) {
                 (new SapiEmitter)->emit($response);
             }
         }
@@ -64,6 +72,7 @@ class App
             'Session'       => Session::class,
             'Config'        => Config::class,
             'Logger'        => Logger::class,
+            'Middleware'    => MiddlewareHandler::class,
         ]);
     }
 

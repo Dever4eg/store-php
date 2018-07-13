@@ -6,6 +6,8 @@
  */
 
 use App\Controllers;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Src\View;
 
 $router = \Src\App::getRouter();
