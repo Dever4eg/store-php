@@ -19,8 +19,8 @@ class FrontController extends BaseFrontController
         require_once __DIR__ . "/routes/web.php";
 
         App::getMiddleware()->setAliases([
-            'auth'      => \Src\Authorization\AuthMiddleware::class,
-            'guest'      => \Src\Authorization\GuestMiddleware::class,
+            'auth'      => new \Src\Authorization\AuthMiddleware('/login'),
+            'guest'      => new \Src\Authorization\GuestMiddleware('/account'),
         ]);
 
         App::run();

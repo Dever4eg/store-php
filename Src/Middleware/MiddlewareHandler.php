@@ -34,7 +34,7 @@ class MiddlewareHandler implements AppSingleComponent
         if($middleware instanceof MiddlewareInterface) {
             $this->queue->enqueue($middleware);
         } elseif(is_string($middleware) && isset($this->aliases[strtolower($middleware)])) {
-            $this->queue->enqueue(new $this->aliases[strtolower($middleware)]);
+            $this->queue->enqueue($this->aliases[strtolower($middleware)]);
         } else {
             return false;
         }
