@@ -9,6 +9,7 @@
 namespace Src\Routing;
 
 use Psr\Http\Message\RequestInterface;
+use Src\Middleware\MiddlewareInterface;
 
 class Route
 {
@@ -16,6 +17,7 @@ class Route
     public $url;
     public $handler;
     public $name;
+    protected $middleware = [];
 
     public function __construct($method, $url, $handler, $name = null)
     {
@@ -24,6 +26,24 @@ class Route
         $this->handler = $handler;
         $this->name = $name;
     }
+
+    public function middleware(MiddlewareInterface $middleware)
+    {
+        $this->middleware[] = $middleware;
+        return $this;
+    }
+
+    public function middlewareExist()
+    {
+        return !empty($this->middleware);
+    }
+
+    public function getMiddleware()
+    {
+        return $this->middleware;
+    }
+
+
 
     public function match(RequestInterface $request) : bool
     {

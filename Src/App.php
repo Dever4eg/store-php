@@ -50,12 +50,18 @@ class App
 
             $match = self::getRouter()->getMatch($request);
             $middleware = self::getMiddleware();
+            if($match->middlewareExist()) {
+                foreach ($match->getMiddleware() as $item) {
+                    $middleware->register($item);
+                }
+            }
             $response = $middleware->run($request, $match->handler);
 
         } catch (Error404Exception $e) {
             $response = new HtmlResponse($e->message);
         } finally {
-            if(isset($response ) && $response instanceof ResponseInterface) {
+            if(
+                empty(ob_get_length()) && isset($response ) && $response instanceof ResponseInterface) {
                 (new SapiEmitter)->emit($response);
             }
         }
