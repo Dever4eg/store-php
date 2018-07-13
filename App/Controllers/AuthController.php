@@ -31,6 +31,7 @@ class AuthController extends Controller
                 'Login failed',
                 'Login or password is invalid'
             ));
+            return new RedirectResponse("/login");
         } else {
             (new Auth)->auth($login);
             App::getSession()->setFlashMessage(new FlashMessage(
@@ -38,9 +39,8 @@ class AuthController extends Controller
                 'Login success',
                 'You are logged in'
             ));
+            return new RedirectResponse("/account");
         }
-
-        return new RedirectResponse("/");
     }
 
     public function logout()

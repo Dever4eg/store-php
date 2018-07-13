@@ -24,34 +24,45 @@ class Router implements AppSingleComponent
      */
     protected $match = null;
 
-    public function add($method, $url, $handler, $name = null)
+    public function add($method, $url, $handler, array $params = null)
     {
-        return $this->routes[] = new Route($method, $url, $handler, $name);
+        return $this->routes[] = new Route($method, $url, $handler, $params);
     }
 
-    public function get($url, $handler, $name = null)
+    public function get($url, $handler, array $params = null)
     {
-        return $this->add('get', $url, $handler, $name);
+        return $this->add('get', $url, $handler, $params);
     }
 
-    public function post($url, $handler, $name = null)
+    public function post($url, $handler, array $params = null )
     {
-        return $this->add('post', $url, $handler, $name);
+        return $this->add('post', $url, $handler, $params);
     }
 
-    public function put($url, $handler, $name = null)
+    public function put($url, $handler, array $params = null)
     {
-        return $this->add('put', $url, $handler, $name);
+        return $this->add('put', $url, $handler, $params);
     }
 
-    public function patch($url, $handler, $name = null)
+    public function patch($url, $handler, array $params = null)
     {
-        return $this->add('patch', $url, $handler, $name);
+        return $this->add('patch', $url, $handler, $params);
     }
 
-    public function delete($url, $handler, $name = null)
+    public function delete($url, $handler, array $params = null)
     {
-        return $this->add('delete', $url, $handler, $name);
+        return $this->add('delete', $url, $handler, $params);
+    }
+
+    public function group(callable $callback, array $params = null)
+    {
+        $router = new Router();
+        $callback($router);
+
+        foreach ($router->getAll() as $route) {
+            $route->setParams($params);
+            $this->routes[] = $route;
+        }
     }
 
     /**
