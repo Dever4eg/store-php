@@ -11,7 +11,6 @@ namespace App;
 
 use Src\App;
 use Src\App\FrontController as BaseFrontController;
-use Src\Middleware\TestMiddleware;
 
 class FrontController extends BaseFrontController
 {

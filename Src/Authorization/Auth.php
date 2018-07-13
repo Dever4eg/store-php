@@ -10,7 +10,6 @@ namespace Src\Authorization;
 
 
 use Src\App;
-use Src\Session\FlashMessage;
 
 class Auth
 {
