@@ -9,7 +9,9 @@
 namespace Src\Logging;
 
 
-interface LoggerInterface
+use Src\App\AppSingleComponent;
+
+interface LoggerInterface extends AppSingleComponent
 {
 
 }

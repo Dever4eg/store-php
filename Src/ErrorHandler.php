@@ -9,6 +9,8 @@
 namespace Src;
 
 
+use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
+
 class ErrorHandler
 {
     protected $debug = false;
@@ -16,6 +18,7 @@ class ErrorHandler
     public function setDebugMode(bool $debug)
     {
         $this->debug = $debug;
+        return $this;
     }
 
     public function errorHandler($errno, $message, $file, $line)
@@ -38,16 +41,14 @@ class ErrorHandler
             E_USER_DEPRECATED => 'E_USER_DEPRECATED',
         );
 
-        if($this->debug) {
-            // TODO: pretty view
-            echo "<b>" . $errors[$errno] ."[" . $errno . "]" ."</b>";
-            echo "<p>" .  $message . "</p>";
-            echo "<p>" .  $file . ":" . $line . "</p>";
-            die;
-        } else {
-            // TODO: logging
-        }
+        App::getLogger()->log($errors[$errno].': '. $message. ' in file:'. $file.':'.$line, 'error');
 
+        (new SapiEmitter())->emit(
+            (new View(
+                "server_error",
+                __DIR__.'/views'
+            ))->getHtmlResponse()->withStatus(500)
+        );
 
         return true;
     }
@@ -60,18 +61,17 @@ class ErrorHandler
             ob_end_clean();
             $this->errorHandler($error['type'], $error['message'], $error['file'], $error['line']);
         }
-        else
-        {
-            // отправка (вывод) буфера и его отключение
-            ob_end_flush();
-        }
     }
-
-
 
     public function register()
     {
-        set_error_handler([$this, 'errorHandler']);
-        register_shutdown_function([$this, 'fatalErrorHandler']);
+        if($this->debug == false ) {
+            set_error_handler([$this, 'errorHandler']);
+            register_shutdown_function([$this, 'fatalErrorHandler']);
+        } else {
+            $whoops = new \Whoops\Run;
+            $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+            $whoops->register();
+        }
     }
 }

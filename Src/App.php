@@ -37,14 +37,14 @@ class App
     public static function init()
     {
         self::addSystemComponents();
-
-        $err_handler = new ErrorHandler();
-        $err_handler->register();
-        $err_handler->setDebugMode(self::getConfig()->get("debug"));
     }
 
     public static function run()
     {
+        (new ErrorHandler())
+            ->setDebugMode(App::getConfig()->get("debug") ?? false)
+            ->register();
+
         try {
             $request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
 
@@ -58,7 +58,7 @@ class App
             $response = $middleware->run($request, $match->handler);
 
         } catch (Error404Exception $e) {
-            $response = new HtmlResponse($e->message);
+            $response = (new view('error404', __DIR__.'/views'))->getHtmlResponse();
         } finally {
             if(
                 empty(ob_get_length()) && isset($response ) && $response instanceof ResponseInterface) {

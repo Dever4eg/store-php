@@ -17,7 +17,13 @@ class Config implements AppSingleComponent
 
     public function __construct()
     {
-        $this->params = array_merge($this->params, require APP_PATH . '/configs/app.php');
+
+    }
+
+    public function loadConfigFromFile($file)
+    {
+        file_exists($file) ? $this->params = array_merge($this->params, require $file) : false;
+        return $this;
     }
 
     public function getAll()

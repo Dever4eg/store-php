@@ -1,8 +1,8 @@
 <?php
 
 return [
+    // Error handling
     "debug"         => true,
-
-    "log_errors"    => false,
-    "log_path"      => BASE_PATH . '/var/logs/app.log'
+    "log_http"      => false,
+    "log_path"      => BASE_PATH . '/var/logs/'
 ];
