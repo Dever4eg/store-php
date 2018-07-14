@@ -19,7 +19,12 @@ class ProductsController extends Controller
     public function index()
     {
 
-        var_dump(Product::all());
+        $product = Product::getById(7);
+        $product->title = $product->title . "-e-";
+        $product->save();
+
+        var_dump($product);
+
 
 //        $products = require APP_PATH . '/Models/products_data.php';
 //        return (new View("main") )
