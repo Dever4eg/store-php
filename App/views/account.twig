@@ -1,0 +1,8 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+    <h3>User account</h3>
+    {% if getAuthLogin() %}
+            <h4>Hello, {{ getAuthLogin() }}</h4>
+    {% endif %}
+{% endblock %}
