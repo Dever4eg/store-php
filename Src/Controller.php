@@ -9,7 +9,7 @@
 namespace Src;
 
 
-class Controller
+abstract class Controller
 {
 
 }

@@ -16,6 +16,7 @@ use Src\Middleware\MiddlewareHandler;
 use Src\Routing\Router;
 use Src\Logging\Logger;
 use Src\Session\Session;
+use Src\Traits\Singleton;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
@@ -28,6 +29,7 @@ use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
  * @method static Config getConfig()
  * @method static Logger getLogger()
  * @method static MiddlewareHandler getMiddleware()
+ * @method static Db getDB()
  */
 class App
 {
@@ -76,6 +78,7 @@ class App
             'Config'        => Config::class,
             'Logger'        => Logger::class,
             'Middleware'    => MiddlewareHandler::class,
+            'Db'            => DB::class,
         ]);
     }
 
@@ -83,6 +86,12 @@ class App
     {
         $interfaces = class_implements($class);
         return isset($interfaces[$interface]);
+    }
+
+    protected static function isUseTrait($class, $trait)
+    {
+        $traits = class_uses($class);
+        return isset($traits[$trait]);
     }
 
 
@@ -104,5 +113,10 @@ class App
 
         if (self::isInterfaceImplement($class, AppSingleComponent::class))
             return (self::$instances[$component] = new self::$components[$component]);
+
+        if (self::isUseTrait($class, Singleton::class))
+            return (self::$instances[$component] = self::$components[$component]::instance());
+
+        return false;
     }
 }
