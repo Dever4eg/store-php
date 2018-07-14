@@ -1,5 +1,9 @@
 <?php
+// Config file for phinx (db migrations, seeds)
+
+const BASE_PATH = __DIR__;
 $config = (new \Src\Config)->loadConfigFromFile(__DIR__.'/App/configs/app.php');
+
 return
 [
     'paths' => [

@@ -1,4 +1,7 @@
 {
+    "config": {
+        "sort-packages": true
+    },
     "require": {
         "php": ">=7.1.0",
         "twig/twig": "^2.4",
@@ -16,6 +19,8 @@
         }
     },
     "scripts": {
-        "phinx": "php vendor/bin/phinx"
+        "phinx": "php vendor/bin/phinx",
+        "phinx-refresh": "php vendor/bin/phinx rollback && php vendor/bin/phinx migrate",
+        "serve": "php -S localhost:8080 -t ./public"
     }
 }
