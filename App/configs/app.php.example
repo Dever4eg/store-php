@@ -1,0 +1,18 @@
+<?php
+
+return [
+    // Error handling
+    "debug"         => true,
+    "log_http"      => false,
+    "log_path"      => BASE_PATH . '/var/logs/',
+
+    "database"      => [
+        'adapter'   => 'mysql',
+        'host'      => 'localhost',
+        'name'      => 'name',
+        'user'      => 'user',
+        'pass'      => 'pass',
+        'port'      => '3306',
+        'charset'   => 'utf8',
+    ],
+];

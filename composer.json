@@ -6,12 +6,16 @@
         "dever4eg/logger": "^1.3",
         "zendframework/zend-diactoros": "^1.8",
         "zendframework/zend-httphandlerrunner": "^1.0",
-        "filp/whoops": "^2.2"
+        "filp/whoops": "^2.2",
+        "robmorgan/phinx": "^0.10.5"
     },
     "autoload": {
         "psr-4": {
             "App\\": "App/",
             "Src\\": "Src/"
         }
+    },
+    "scripts": {
+        "phinx": "php vendor/bin/phinx"
     }
 }
