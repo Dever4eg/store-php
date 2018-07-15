@@ -10,6 +10,7 @@ namespace App\Controllers;
 
 
 use App\Models\Product;
+use Psr\Http\Message\ServerRequestInterface;
 use Src\App;
 use Src\Controller;
 use Src\View;
@@ -19,17 +20,16 @@ class ProductsController extends Controller
 {
     public function index()
     {
-        $products = require APP_PATH . '/Models/products_data.php';
+        $products = Product::all();
 
         return (new View("main") )
             ->withParam("products", $products)
             ->getHtmlResponse();
     }
 
-    public function show()
+    public function show(ServerRequestInterface $request)
     {
-        $products = require APP_PATH . '/Models/products_data.php';
-        $product = $products[$_GET['id']];
+        $product = Product::getById($request->getQueryParams()['id']);
 
         return (new View("product"))
             ->withParam("product", $product)
