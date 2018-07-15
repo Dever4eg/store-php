@@ -18,9 +18,12 @@ use Zend\Diactoros\Response\HtmlResponse;
 
 class ProductsController extends Controller
 {
-    public function index()
+    public function index(ServerRequestInterface $request)
     {
-        $products = Product::all();
+        $products = Product::all([
+            'limit' => 12,
+            'offset' => $request->getQueryParams()['page'] ?? 1,
+        ]);
 
         return (new View("main") )
             ->withParam("products", $products)
