@@ -13,23 +13,17 @@ use App\Models\Product;
 use Src\App;
 use Src\Controller;
 use Src\View;
+use Zend\Diactoros\Response\HtmlResponse;
 
 class ProductsController extends Controller
 {
     public function index()
     {
+        $products = require APP_PATH . '/Models/products_data.php';
 
-        $product = Product::getById(7);
-        $product->title = $product->title . "-e-";
-        $product->save();
-
-        var_dump($product);
-
-
-//        $products = require APP_PATH . '/Models/products_data.php';
-//        return (new View("main") )
-//            ->withParam("products", $products)
-//            ->getHtmlResponse();
+        return (new View("main") )
+            ->withParam("products", $products)
+            ->getHtmlResponse();
     }
 
     public function show()
