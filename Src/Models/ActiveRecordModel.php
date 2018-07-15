@@ -33,11 +33,29 @@ abstract class ActiveRecordModel extends Model
     }
 
 
-    public static function all()
+    private static function addSqlParams($params)
+    {
+        $sql = '';
+        foreach ($params as $param => $value) {
+            switch (strtolower($param)) {
+                case "limit":
+                    $sql .= ' LIMIT '. $value;
+                    break;
+                case "offset":
+                    $sql .= ' OFFSET '. $value;
+                    break;
+            }
+        }
+        return $sql;
+    }
+
+
+    public static function all($params)
     {
         $db = self::getDB();
 
-        $sql = 'SELECT * FROM ' . self::getTableName();
+        $sql = 'SELECT * FROM ' . self::getTableName() . self::addSqlParams($params);
+
         return $db->query($sql);
     }
 
