@@ -13,7 +13,10 @@ $router = \Src\App::getRouter();
 
 $router->get('/',               [new Controllers\ProductsController(), 'index']);
 $router->get('/details',        [new Controllers\ProductsController(), 'show']);
+
 $router->get('/cart',           [new Controllers\CartController(), 'all']);
+$router->get('/cart/add',       [new Controllers\CartController(), 'add']);
+$router->get('/cart/remove',    [new Controllers\CartController(), 'remove']);
 
 
 // only authorized users
