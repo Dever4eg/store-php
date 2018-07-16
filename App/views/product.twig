@@ -1,17 +1,17 @@
-{% extends "layout.twig" %}
+{% extends "layouts/main.twig" %}
 
 {% block content %}
 
     <div class="row">
 
         <div class="col-md-6">
-            <img src="https://cnet2.cbsistatic.com/img/hjo7_UY6ykIh_9cfttUZYaiF7V0=/770x433/2017/06/21/39c814c4-4909-43e8-aa0d-89eff3aced37/apple-macbook-12-inch-2017-01.jpg"
+            <img src={{ product.image }}"
                  alt="product-img" class="rounded img-fluid">
         </div>
 
         <div class="col-md-6">
-            <h4>{{ product['name'] }}</h4>
-           {{ product['description']|raw }}
+            <h4>{{ product.name }}</h4>
+           {{ product.description|raw }}
         </div>
     </div>
 
@@ -35,7 +35,7 @@
             </nav>
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-description" role="tabpanel" aria-labelledby="nav-description-tab">
-                    {{ product['description']|raw }}
+                    {{ product.description|raw }}
                 </div>
                 <div class="tab-pane fade" id="nav-specifications" role="tabpanel" aria-labelledby="nav-specifications-tab">
                     <table class="table">

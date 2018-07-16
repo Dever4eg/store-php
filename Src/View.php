@@ -10,6 +10,7 @@ namespace Src;
 
 
 use Src\Authorization\Auth;
+use Zend\Diactoros\Response\HtmlResponse;
 
 class View
 {
@@ -18,16 +19,16 @@ class View
 
     protected $twig;
 
-    protected $path = APP_PATH . '/views';
+    protected $path;
     protected $extension = "twig";
 
-    /**
-     * View constructor.
-     * @param $view
-     * @return self
-     */
-    public function __construct($view)
+    public function __construct($view, $template_dir = null)
     {
+        if(!empty($template_dir)) {
+            $this->path[] = $template_dir;
+        }
+        $this->path[] = App::getConfig()->get('views_dir') ?? APP_PATH . '/views';
+
         $this->view = $view . '.' . $this->extension;
 
         $loader = new \Twig_Loader_Filesystem($this->path);
@@ -36,15 +37,13 @@ class View
         ));
 
 
-        $this->twig->addFunction( new \Twig_SimpleFunction('getAuthLogin', function() {
-            return (new Auth())->getLogin();
+        $this->twig->addFunction( new \Twig_SimpleFunction('getUser', function() {
+            return (new Auth())->getUser();
         }));
 
         $this->twig->addFunction( new \Twig_SimpleFunction('getFlashMessages', function() {
             return App::getSession()->getFlashMessages();
         }));
-
-        return $this;
     }
 
     public function withParam($name, $value)
@@ -69,5 +68,10 @@ class View
     public function display()
     {
         echo $this->render();
+    }
+
+    public function getHtmlResponse()
+    {
+        return new HtmlResponse($this->render());
     }
 }

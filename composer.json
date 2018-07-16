@@ -1,14 +1,30 @@
 {
+    "config": {
+        "sort-packages": true
+    },
     "require": {
         "php": ">=7.1.0",
-        "twig/twig": "^2.4",
+        "dever4eg/logger": "^1.3",
+        "filp/whoops": "^2.2",
+        "robmorgan/phinx": "^0.10.5",
         "swiftmailer/swiftmailer": "^6.0",
-        "dever4eg/logger": "^1.3"
+        "twig/twig": "^2.4",
+        "zendframework/zend-diactoros": "^1.8",
+        "zendframework/zend-httphandlerrunner": "^1.0"
     },
     "autoload": {
         "psr-4": {
             "App\\": "App/",
             "Src\\": "Src/"
         }
+    },
+    "scripts": {
+        "phinx": "php vendor/bin/phinx",
+        "phinx-refresh": "php vendor/bin/phinx rollback -t 0&& php vendor/bin/phinx migrate",
+        "serve": "php -S 0.0.0.0:8080 -t public"
+    },
+    "require-dev": {
+        "fzaninotto/faker": "^1.8",
+        "mbezhanov/faker-provider-collection": "^1.0"
     }
 }

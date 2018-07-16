@@ -1,0 +1,17 @@
+{% extends "layouts/main.twig" %}
+
+{% block mainwrapper %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-5 col-md-4 col-lg-2">
+                {% include "admin/partials/admin_menu.twig" %}
+            </div>
+            <div class="col-sm-7 col-md-8 col-lg-10">
+                <h3 class="float-right">Admin</h3>
+                {% block content %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

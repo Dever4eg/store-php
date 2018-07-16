@@ -11,5 +11,6 @@ namespace Src\Exceptions\Http;
 
 class Error404Exception extends HttpException
 {
+   public $message = '404 error. Page not found';
 
 }

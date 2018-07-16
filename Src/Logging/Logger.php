@@ -16,7 +16,7 @@ class Logger extends DLogger implements AppSingleComponent, LoggerInterface
 {
     public function __construct()
     {
-        $file = App::getConfig()->get('log_path') ?? "/var/logs/base.log";
-        parent::__construct($file);
+        $path = App::getConfig()->get('log_path');
+        parent::__construct($path.'error.log');
     }
 }

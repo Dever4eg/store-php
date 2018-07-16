@@ -6,53 +6,37 @@
  */
 
 use App\Controllers;
+use \Src\Routing\Router;
 use Src\View;
 
 $router = \Src\App::getRouter();
 
-$router->add('get', '/', function () {
-    \Src\App::getLogger()->log("HTTP GET /");
-    $products = require APP_PATH . '/products_data.php';
-    (new View("main") )
-        ->withParam("products", $products)
-        ->display();
-});
+$router->get('/',               [new Controllers\ProductsController(), 'index']);
+$router->get('/details',        [new Controllers\ProductsController(), 'show']);
+$router->get('/cart',           [new View("cart"), 'getHtmlResponse']);
 
-$router->add('get', '/details', function () {
 
-    $products = require APP_PATH . '/products_data.php';
-    $product = $products[$_GET['id']];
+// only authorized users
+$router->group(function (Router $router) {
 
-    (new View("product"))
-        ->withParam("product", $product)
-        ->display();
-});
+    // Only customers
+    $router->group(function (Router $router) {
+        $router->get('/account',    [new View("account"), 'getHtmlResponse']);
+    }, ['middleware' => 'customer']);
 
-$router->add('get', '/cart', [new View("cart"), 'display']);
-$router->add('get', '/test', [new Controllers\TestController, 'index']);
+    // Only admins
+    $router->group(function (Router $router) {
+        $router->get('/admin',          [new View('/admin/dashboard'),  'getHtmlResponse']);
+        $router->get('/admin/users',    [new View('/admin/users'),      'getHtmlResponse']);
+        $router->get('/admin/products', [new View('/admin/products'),   'getHtmlResponse']);
+    }, ['middleware' => 'admin']);
 
-$router->add('get', '/login', function() {
-    echo "login page";
-});
-$router->add('post', '/login', function() {
-    $auth = new \Src\Authorization\Auth();
-    if($auth->auth()) {
-        header('Location: /');
-    } else {
-        header('Location: /');
-    }
-});
+    $router->get('/logout',     [new Controllers\AuthController(), 'logout']);
 
-$router->add('get', '/home', function() {
-    $auth = new \Src\Authorization\Auth();
-    if(!$auth->isAuth()) {
-        die('not auth');
-    }
-    echo "home/<br>Hello, ". $auth->getLogin();
+}, ['middleware' => 'auth']);
 
-});
-
-$router->add('get', '/logout', function () {
-    (new \Src\Authorization\Auth())->logout();
-    header('Location: /');
-});
+// only unauthorized users
+$router->group(function (Router $router) {
+    $router->get('/login',      [new View("login"), 'getHtmlResponse']);
+    $router->post('/login',     [new Controllers\AuthController(), 'login']);
+}, ['middleware' => 'guest']);
