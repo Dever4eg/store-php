@@ -17,13 +17,16 @@ class Route
     public $url;
     public $handler;
     public $name;
-    protected $middleware = [];
+    protected $middleware;
 
     public function __construct($method, $url, $handler, array $params = null)
     {
         $this->method = strtoupper($method);
         $this->url = $url;
         $this->handler = $handler;
+
+        $this->middleware = new \SplStack;
+
         if(!empty($params) && is_array($params)) {
             $this->setParams($params);
         }
@@ -46,13 +49,7 @@ class Route
 
     public function middleware($middleware)
     {
-        if(is_string($middleware)){
-            $this->setMiddleware($middleware);
-        } elseif(is_array($middleware)) {
-            foreach ($middleware as $item) {
-                $this->setMiddleware($item);
-            }
-        }
+        $this->setMiddleware($middleware);
     }
 
     /**
@@ -61,17 +58,17 @@ class Route
      */
     public function setMiddleware($middleware)
     {
-        if(is_array($middleware)) {
-            $this->middleware = array_merge($this->middleware, $middleware);
-        } else {
+        if(!is_array($middleware)) {
             $this->middleware[] = $middleware;
+        } else {
+           $this->middleware->push($middleware);
         }
         return $this;
     }
 
     public function middlewareExist()
     {
-        return !empty($this->middleware);
+        return !$this->middleware->isEmpty();
     }
 
     public function getMiddleware()
