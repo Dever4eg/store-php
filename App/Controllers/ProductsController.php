@@ -10,8 +10,10 @@ namespace App\Controllers;
 
 
 use App\Models\Product;
+use App\Models\User;
 use Psr\Http\Message\ServerRequestInterface;
 use Src\App;
+use Src\Authorization\Auth;
 use Src\Controller;
 use Src\View;
 use Zend\Diactoros\Response\HtmlResponse;

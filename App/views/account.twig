@@ -2,7 +2,7 @@
 
 {% block content %}
     <h3>User account</h3>
-    {% if getAuthLogin() %}
-            <h4>Hello, {{ getAuthLogin() }}</h4>
+    {% if getUser() %}
+            <h4>Hello, {{ getUser().email }}</h4>
     {% endif %}
 {% endblock %}

@@ -15,15 +15,15 @@ abstract class ActiveRecordModel extends Model
 {
     static $table = null;
 
-    private static function getTableName()
+    public static function getTableName()
     {
         $class = explode('\\', get_called_class());
         $class = array_pop($class);
         $table = !empty(static::$table) ? static::$table : strtolower($class). 's';
         return $table;
     }
-    
-    private static function getDB()
+
+    protected static function getDB()
     {
         $db = App::getDB();
         $class = get_called_class();
@@ -33,7 +33,7 @@ abstract class ActiveRecordModel extends Model
     }
 
 
-    private static function addSqlParams($params = [])
+    protected static function addSqlParams($params = [])
     {
         $sql = '';
         foreach ($params as $param => $value) {

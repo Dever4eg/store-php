@@ -32,13 +32,13 @@
 
             <ul class="navbar-nav float-right">
 
-                    {% if not getAuthLogin() %}
+                    {% if not getUser() %}
                         <li class="nav-item">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login-modal">Login</button>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a href="/account" class="navbar-text mr-sm-2">Hello, {{ getAuthLogin() }}</a>
+                            <a href="/account" class="navbar-text mr-sm-2">Hello, {{ getUser().email }}</a>
                         </li>
                         <li class="nav-item">
                             <a href="/logout" class="btn btn-primary">logout</a>

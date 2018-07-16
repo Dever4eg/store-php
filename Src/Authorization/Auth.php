@@ -21,31 +21,31 @@ class Auth
         }
         $session->start();
 
-        if(!$session->contains('login')) {
+        if(!$session->contains('user')) {
             return false;
         }
 
-        return $session->get('login');
+        return $session->get('user');
     }
 
-    public function auth($login)
+    public function auth($user)
     {
         App::getSession()->start()
-            ->set("login", $login);
+            ->set("user", $user);
         return true;
     }
 
     public function logout()
     {
         $session = App::getSession()->start();
-        $session->delete('login');
+        $session->delete('user');
     }
 
-    public function getLogin()
+    public function getUser()
     {
         if(!$this->isAuth()) {
             return false;
         }
-        return App::getSession()->get('login');
+        return App::getSession()->get('user');
     }
 }

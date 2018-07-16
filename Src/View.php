@@ -37,8 +37,8 @@ class View
         ));
 
 
-        $this->twig->addFunction( new \Twig_SimpleFunction('getAuthLogin', function() {
-            return (new Auth())->getLogin();
+        $this->twig->addFunction( new \Twig_SimpleFunction('getUser', function() {
+            return (new Auth())->getUser();
         }));
 
         $this->twig->addFunction( new \Twig_SimpleFunction('getFlashMessages', function() {

@@ -9,6 +9,7 @@
 namespace App\Controllers;
 
 
+use App\Models\User;
 use Psr\Http\Message\RequestInterface;
 use Src\App;
 use Src\Authorization\Auth;
@@ -22,41 +23,35 @@ class AuthController extends Controller
     {
         $request = $request->getParsedBody();
 
-        $login = $request['login'];
-        $password = sha1($request['password']);
+        $email = $request['login'];
+        $password = $request['password'];
 
-        if(!$this->checkUserData($login, $password)) {
+        // TODO: validation
+
+        $user = User::getByColsWithRole(['email' => $email, 'password' => User::HashPassword($password)]);
+
+        if(empty($user)) {
             App::getSession()->setFlashMessage(new FlashMessage(
                 'error',
                 'Login failed',
                 'Login or password is invalid'
             ));
             return new RedirectResponse("/login");
-        } else {
-            (new Auth)->auth($login);
-            App::getSession()->setFlashMessage(new FlashMessage(
-                'success',
-                'Login success',
-                'You are logged in'
-            ));
-            return new RedirectResponse("/account");
         }
+
+        (new Auth)->auth($user);
+        App::getSession()->setFlashMessage(new FlashMessage(
+            'success',
+            'Login success',
+            'You are logged in'
+        ));
+        return new RedirectResponse("/account");
+
     }
 
     public function logout()
     {
         (new \Src\Authorization\Auth())->logout();
         return new RedirectResponse('/');
-    }
-
-    protected function checkUserData($login, $password)
-    {
-        $user = [
-
-            'login'     => "admin@admin.com",
-            'password'  =>  sha1("password"),
-        ];
-
-        return ($login == $user['login'] && $password == $user['password']);
     }
 }
