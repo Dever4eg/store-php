@@ -1,6 +1,8 @@
 <?php
 // Config file for phinx (db migrations, seeds)
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 const BASE_PATH = __DIR__;
 \Src\App::init();
 $config = \Src\App::getConfig()->loadConfigFromFile(__DIR__.'/App/configs/app.php');
@@ -8,8 +10,8 @@ $config = \Src\App::getConfig()->loadConfigFromFile(__DIR__.'/App/configs/app.ph
 return
 [
     'paths' => [
-        'migrations' => __DIR__ . '/app/db/migrations',
-        'seeds' => __DIR__ . '/app/db/seeds'
+        'migrations' => __DIR__ . '/App/db/migrations',
+        'seeds' => __DIR__ . '/App/db/seeds'
     ],
     'environments' => [
         'default_migration_table' => 'phinxlog',
