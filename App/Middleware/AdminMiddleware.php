@@ -2,24 +2,29 @@
 /**
  * Created by PhpStorm.
  * User: phpuser
- * Date: 13.07.18
- * Time: 13:38
+ * Date: 16.07.18
+ * Time: 13:09
  */
 
-namespace Src\Authorization;
+namespace App\Middleware;
 
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Src\Middleware\RedirectMiddleware;
+use Src\Authorization\Auth;
+use Src\Exceptions\Http\Error404Exception;
 
-class AuthMiddleware extends RedirectMiddleware
+class AdminMiddleware
 {
     public function handle(ServerRequestInterface $request, ResponseInterface $response, $next)
     {
-        if( !(new Auth)->isAuth() ) {
-            return parent::redirect();
+        $auth = new Auth();
+
+        $user = $auth->getUser();
+        if($user->role != 'admin') {
+            throw new Error404Exception();
         }
+
         return $next($request, $response, $next);
     }
 }

@@ -15,15 +15,15 @@ abstract class ActiveRecordModel extends Model
 {
     static $table = null;
 
-    private static function getTableName()
+    public static function getTableName()
     {
         $class = explode('\\', get_called_class());
         $class = array_pop($class);
         $table = !empty(static::$table) ? static::$table : strtolower($class). 's';
         return $table;
     }
-    
-    private static function getDB()
+
+    protected static function getDB()
     {
         $db = App::getDB();
         $class = get_called_class();
@@ -33,7 +33,7 @@ abstract class ActiveRecordModel extends Model
     }
 
 
-    private static function addSqlParams($params)
+    protected static function addSqlParams($params = [])
     {
         $sql = '';
         foreach ($params as $param => $value) {
@@ -50,7 +50,7 @@ abstract class ActiveRecordModel extends Model
     }
 
 
-    public static function all($params)
+    public static function all($params = [])
     {
         $db = self::getDB();
 
@@ -69,6 +69,20 @@ abstract class ActiveRecordModel extends Model
         return empty($res) ? false : $res[0];
     }
 
+
+    public static function findByColumn($col, $value, $params = [])
+    {
+        $db = self::getDB();
+
+        $sql = 'SELECT * FROM ' . self::getTableName() . ' WHERE ' . $col . '=:'.$col;
+        $pdo_params[':'.$col] = $value;
+
+        $sql .= self::addSqlParams($params);
+
+        $res = $db->query($sql, $pdo_params);
+
+        return $res;
+    }
 
     public function save()
     {

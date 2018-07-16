@@ -20,7 +20,7 @@
     },
     "scripts": {
         "phinx": "php vendor/bin/phinx",
-        "phinx-refresh": "php vendor/bin/phinx rollback && php vendor/bin/phinx migrate",
+        "phinx-refresh": "php vendor/bin/phinx rollback -t 0&& php vendor/bin/phinx migrate",
         "serve": "php -S 0.0.0.0:8080 -t public"
     },
     "require-dev": {
