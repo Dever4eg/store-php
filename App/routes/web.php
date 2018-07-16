@@ -16,7 +16,6 @@ $router->get('/details',        [new Controllers\ProductsController(), 'show']);
 $router->get('/cart',           [new View("cart"), 'getHtmlResponse']);
 
 
-
 // only authorized users
 $router->group(function (Router $router) {
 
@@ -27,9 +26,9 @@ $router->group(function (Router $router) {
 
     // Only admins
     $router->group(function (Router $router) {
-        $router->get('/admin',    function () {
-            return new \Zend\Diactoros\Response\HtmlResponse('Admin');
-        });
+        $router->get('/admin',          [new View('/admin/dashboard'),  'getHtmlResponse']);
+        $router->get('/admin/users',    [new View('/admin/users'),      'getHtmlResponse']);
+        $router->get('/admin/products', [new View('/admin/products'),   'getHtmlResponse']);
     }, ['middleware' => 'admin']);
 
     $router->get('/logout',     [new Controllers\AuthController(), 'logout']);

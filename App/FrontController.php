@@ -21,8 +21,8 @@ class FrontController extends BaseFrontController
         App::getMiddleware()->setAliases([
             'auth'          => new \Src\Authorization\AuthMiddleware('/login'),
             'guest'         => new \Src\Authorization\GuestMiddleware('/account'),
-            'admin'         => new \App\Middleware\AdminOnlyMiddleware(),
-            'customer'      => new \App\Middleware\CustomerOnlyMiddleware('/admin'),
+            'admin'         => new \App\Middleware\AdminMiddleware(),
+            'customer'      => new \App\Middleware\CustomerMiddleware('/admin'),
         ]);
 
         App::getConfig()->loadConfigFromFile(APP_PATH.'/configs/app.php');

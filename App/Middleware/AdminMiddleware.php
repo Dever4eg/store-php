@@ -13,17 +13,16 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Src\Authorization\Auth;
 use Src\Exceptions\Http\Error404Exception;
-use Src\Middleware\RedirectMiddleware;
 
-class CustomerOnlyMiddleware extends RedirectMiddleware
+class AdminMiddleware
 {
     public function handle(ServerRequestInterface $request, ResponseInterface $response, $next)
     {
         $auth = new Auth();
 
         $user = $auth->getUser();
-        if($user->role != 'customer') {
-            return parent::redirect();
+        if($user->role != 'admin') {
+            throw new Error404Exception();
         }
 
         return $next($request, $response, $next);
