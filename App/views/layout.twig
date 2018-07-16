@@ -38,7 +38,11 @@
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a href="/account" class="navbar-text mr-sm-2">Hello, {{ getUser().email }}</a>
+                            {% if getUser().role =='admin' %}
+                                <a href="/admin" class="navbar-text mr-sm-2">Admin-panel</a>
+                            {% else %}
+                                <a href="/account" class="navbar-text mr-sm-2">Hello, {{ getUser().email }}</a>
+                            {% endif %}
                         </li>
                         <li class="nav-item">
                             <a href="/logout" class="btn btn-primary">logout</a>

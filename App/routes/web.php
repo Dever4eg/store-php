@@ -17,17 +17,36 @@ $router->get('/',               [new Controllers\ProductsController(), 'index'])
 $router->get('/details',        [new Controllers\ProductsController(), 'show']);
 $router->get('/cart',           [new View("cart"), 'getHtmlResponse']);
 
+/*
+ * Only customers
+ */
 $router->group(function (Router $router) {
-
     $router->get('/account',    [new View("account"), 'getHtmlResponse']);
-    $router->get('/logout',     [new Controllers\AuthController(), 'logout']);
-
-}, ['middleware' => 'auth']);
+}, ['middleware' => ['auth', 'customer']]);
 
 
+/*
+ * Only admins
+ */
 $router->group(function (Router $router) {
 
+    $router->get('/admin',    function () {
+        return new \Zend\Diactoros\Response\HtmlResponse('Admin');
+    });
+
+}, ['middleware' => ['auth', 'admin']]);
+
+/*
+ * only authorized users
+ */
+$router->get('/logout',     [new Controllers\AuthController(), 'logout'],
+    ['middleware' => 'auth']
+);
+
+/*
+ * only unauthorized users
+ */
+$router->group(function (Router $router) {
     $router->get('/login',      [new View("login"), 'getHtmlResponse']);
     $router->post('/login',     [new Controllers\AuthController(), 'login']);
-
 }, ['middleware' => 'guest']);

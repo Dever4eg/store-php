@@ -46,7 +46,13 @@ class Route
 
     public function middleware($middleware)
     {
-        $this->setMiddleware($middleware);
+        if(is_string($middleware)){
+            $this->setMiddleware($middleware);
+        } elseif(is_array($middleware)) {
+            foreach ($middleware as $item) {
+                $this->setMiddleware($item);
+            }
+        }
     }
 
     /**
