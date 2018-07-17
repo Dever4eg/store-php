@@ -41,7 +41,10 @@
                 </tbody>
             </table>
 
-            <h4>Summary price: <span class="price">${{ summary }}</span></h4>
+            <h4 class="float-left">Summary price: <span class="price">${{ summary }}</span></h4>
+            <form class="float-right" action="/order" method="post">
+                <input type="submit"    class="btn btn-primary">
+            </form>
 
 
         </div>
