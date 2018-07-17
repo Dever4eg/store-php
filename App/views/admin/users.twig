@@ -2,4 +2,33 @@
 
 {% block content %}
     <h4>Users</h4>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">Created at</th>
+            <th scope="col">Updated at</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for user in users%}
+
+            <tr>
+                <td>{{ user.id}}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.created_at }}</td>
+                <td>{{ user.updated_at }}</td>
+            </tr>
+
+        {% else %}
+            <h4>Users not found</h4>
+        {% endfor %}
+
+
+        </tbody>
+    </table>
 {% endblock %}

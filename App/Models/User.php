@@ -18,6 +18,18 @@ class User extends ActiveRecordModel
         return sha1($password);
     }
 
+    public static function allWithRole($params = [])
+    {
+        $db = self::getDB();
+
+        $sql = 'SELECT users.*, roles.name as role FROM ' . self::getTableName() .
+            ' INNER JOIN ' . Role::getTableName() . ' ON users.role_id=roles.id'.
+            self::addSqlParams($params);
+
+
+        return $db->query($sql);
+    }
+
 
 
     public static function getByIdWithRole($id)

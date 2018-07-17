@@ -31,9 +31,9 @@ $router->group(function (Router $router) {
 
     // Only admins
     $router->group(function (Router $router) {
-        $router->get('/admin',          [new View('/admin/dashboard'),  'getHtmlResponse']);
-        $router->get('/admin/users',    [new View('/admin/users'),      'getHtmlResponse']);
-        $router->get('/admin/products', [new View('/admin/products'),   'getHtmlResponse']);
+        $router->get('/admin',          [new View('/admin/dashboard'),     'getHtmlResponse']);
+        $router->get('/admin/users',    [new App\Controllers\AdminController(),  'users']);
+        $router->get('/admin/products', [new App\Controllers\AdminController(),  'products']);
     }, ['middleware' => 'admin']);
 
     $router->get('/logout',     [new Controllers\AuthController(), 'logout']);

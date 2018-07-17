@@ -3,12 +3,11 @@
 {% block mainwrapper %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-5 col-md-4 col-lg-2">
+            <div class="col-md-4 col-lg-2">
                 {% include "admin/partials/admin_menu.twig" %}
             </div>
-            <div class="col-sm-7 col-md-8 col-lg-10">
+            <div class="col-md-8 col-lg-10">
                 {% include "partials/flash_messages.twig"  %}
-                <h3 class="float-right">Admin</h3>
                 {% block content %}
 
                 {% endblock %}
