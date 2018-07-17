@@ -21,6 +21,21 @@ $router->get('/cart/increment', [new Controllers\CartController(), 'increment'])
 $router->get('/cart/decrement', [new Controllers\CartController(), 'decrement']);
 
 
+
+$router->get('/test', function () {
+
+    var_dump(
+        \App\Models\Product::query()
+            ->where('id', '>', 20)
+            ->where('title', 'like', '%car%')
+            ->orderBy('price', 'asc')
+            ->limit(4)
+            ->offset(1)
+            ->get()
+    );
+});
+
+
 // only authorized users
 $router->group(function (Router $router) {
 

@@ -10,6 +10,7 @@ namespace Src\Models;
 
 
 use Src\App;
+use Src\DB;
 
 abstract class ActiveRecordModel extends Model
 {
@@ -25,12 +26,18 @@ abstract class ActiveRecordModel extends Model
 
     protected static function getDB()
     {
-        $db = App::getDB();
+        $db = DB::instance();
         $class = get_called_class();
         $db->setObjectClass($class);
 
         return $db;
     }
+
+    public static function query()
+    {
+        return new QueryBuilder( get_called_class(), self::getDB());
+    }
+
 
 
     protected static function addSqlParams($params = [])
