@@ -10,7 +10,7 @@
                         <th scope="col" width="18%">Image</th>
                         <th scope="col">Product</th>
                         <th scope="col">Count</th>
-                        <th scope="col">Cost</th>
+                        <th scope="col">Price</th>
                         <th scope="col">Summary</th>
                         <th scope="col">Controls</th>
                     </tr>
@@ -22,10 +22,14 @@
                     <tr>
                         <td><img src="{{ product.image }}" alt="" class="img-fluid"></td>
                         <td class="align-middle">{{ product.title }}</td>
-                        <td class="align-middle">---</td>
-                        <td class="align-middle">{{ product.cost }}</td>
-                        <td class="align-middle">---</td>
-                        <td class="align-middle"><a href="/cart/remove?id={{ i }}" class="btn btn-danger">Remove</a></td>
+                        <td class="align-middle">{{ product.count }}</td>
+                        <td class="align-middle">{{ product.price }}</td>
+                        <td class="align-middle">{{ product.price * product.count }}</td>
+                        <td class="align-middle">
+                            <a href="/cart/increment?id={{ i }}" class="btn btn-primary">+</a>
+                            <a href="/cart/decrement?id={{ i }}" class="btn btn-primary">-</a>
+                            <a href="/cart/remove?id={{ i }}" class="btn btn-danger">Remove</a>
+                        </td>
                     </tr>
                 {% else %}
                     Cart is empty

@@ -10,7 +10,7 @@ namespace App\Controllers;
 
 
 use App\Models\Product;
-use App\Services\Cart;
+use App\Models\Cart;
 use Psr\Http\Message\ServerRequestInterface;
 use Src\App;
 use Src\Session\FlashMessage;
@@ -53,6 +53,28 @@ class CartController
 
         $cart = new Cart();
         $cart->remove($id);
+
+        return new RedirectResponse('/cart');
+    }
+
+    public function increment(ServerRequestInterface $request)
+    {
+        $id = $request->getQueryParams()['id'];
+        // TODO validation
+
+        $cart = new Cart();
+        $cart->increment($id);
+
+        return new RedirectResponse('/cart');
+    }
+
+    public function decrement(ServerRequestInterface $request)
+    {
+        $id = $request->getQueryParams()['id'];
+        // TODO validation
+
+        $cart = new Cart();
+        $cart->decrement($id);
 
         return new RedirectResponse('/cart');
     }
