@@ -6,10 +6,18 @@
     margin-bottom: 20px;
 }
 
+body {
+    padding-top: 80px;
+}
+
 .product-details {
     margin-bottom: 20px;
 }
 
 .product-comment {
     margin-bottom: 20px;
+}
+
+.price {
+    color: green;
 }

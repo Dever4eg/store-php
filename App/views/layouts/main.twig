@@ -19,19 +19,10 @@
 
 
 <article>
-    <div class="container">
-        {% set flash_messages = getFlashMessages() %}
-        {% if flash_messages  %}
-            {% for message in flash_messages %}
-                <div class="alert alert-{{ message.type }}" role="alert">
-                    <h4>{{ message.title }}</h4>
-                    {{ message.body }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
+
     {% block mainwrapper %}
         <div class="container">
+            {% include "partials/flash_messages.twig"  %}
             {% block content %}
 
             {% endblock %}

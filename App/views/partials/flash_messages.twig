@@ -1,0 +1,9 @@
+{% set flash_messages = getFlashMessages() %}
+{% if flash_messages  %}
+    {% for message in flash_messages %}
+        <div class="alert alert-{{ message.type }}" role="alert">
+            <h4>{{ message.title }}</h4>
+            {{ message.body }}
+        </div>
+    {% endfor %}
+{% endif %}
