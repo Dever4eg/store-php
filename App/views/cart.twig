@@ -22,12 +22,14 @@
                     <tr>
                         <td><img src="{{ product.image }}" alt="" class="img-fluid"></td>
                         <td class="align-middle">{{ product.title }}</td>
-                        <td class="align-middle">{{ product.count }}</td>
+                        <td class="align-middle">
+                            <span>{{ product.count }}</span>
+                            <a href="/cart/increment?id={{ i }}" class="btn">+</a>
+                            <a href="/cart/decrement?id={{ i }}" class="btn">-</a>
+                        </td>
                         <td class="align-middle">{{ product.price }}</td>
                         <td class="align-middle">{{ product.price * product.count }}</td>
                         <td class="align-middle">
-                            <a href="/cart/increment?id={{ i }}" class="btn btn-primary">+</a>
-                            <a href="/cart/decrement?id={{ i }}" class="btn btn-primary">-</a>
                             <a href="/cart/remove?id={{ i }}" class="btn btn-danger">Remove</a>
                         </td>
                     </tr>
