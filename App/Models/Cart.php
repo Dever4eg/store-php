@@ -82,4 +82,15 @@ class Cart
         return $this->save($product);
     }
 
+    public function sum()
+    {
+        $sum = 0;
+
+        foreach ($this->all() as $product) {
+            $sum += $product->price * $product->count;
+        }
+
+        return $sum;
+    }
+
 }

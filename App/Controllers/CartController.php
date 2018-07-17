@@ -24,7 +24,10 @@ class CartController
         $cart = new Cart();
 
         $view = new View('cart');
-        $view->withParam('cart', $cart->all());
+        $view->withParams([
+            'cart' => $cart->all(),
+            'summary' => $cart->sum(),
+            ]);
 
         return $view->getHtmlResponse();
     }
