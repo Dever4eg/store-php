@@ -9,13 +9,13 @@
 namespace Src\Middleware;
 
 
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class TestMiddleware implements MiddlewareInterface
 {
 
-    public function handle(RequestInterface $request, ResponseInterface $response, $next)
+    public function handle(ServerRequestInterface $request, ResponseInterface $response, $next)
     {
         // process before
         return $next($request, $response, $next);

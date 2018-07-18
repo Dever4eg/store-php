@@ -9,7 +9,7 @@
 namespace Src\Models;
 
 
-use src\Exceptions\BaseException;
+use Src\Exceptions\BaseException;
 
 class QueryBuilderException extends BaseException
 {

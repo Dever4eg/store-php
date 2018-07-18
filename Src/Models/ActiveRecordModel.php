@@ -106,4 +106,9 @@ abstract class ActiveRecordModel extends Model
         $db->execute($sql, $params);
         $this->id = $db->getLastInsertId();
     }
+
+    public static function hasOne($model_class, $foreign_key, $reference_key)
+    {
+        return new RelationShip(RelationShip::HAS_ONE, $model_class, $foreign_key, $reference_key);
+    }
 }

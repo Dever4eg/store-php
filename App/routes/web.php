@@ -26,12 +26,8 @@ $router->get('/test', function () {
 
     var_dump(
 
-        \App\Models\Product::query()
-            ->where('id', '>', 20)
-            ->where('title', 'like', '%car%')
-            ->orderBy('price', 'asc')
-            ->limit(4)
-            ->offset(1)
+        \App\Models\User::query()
+            ->with('role')
             ->get()
 
     );
