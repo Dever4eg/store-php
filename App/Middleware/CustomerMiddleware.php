@@ -22,7 +22,7 @@ class CustomerMiddleware extends RedirectMiddleware
         $auth = new Auth();
 
         $user = $auth->getUser();
-        if($user->role != 'customer') {
+        if($user->role->name != 'customer') {
             return parent::redirect();
         }
 

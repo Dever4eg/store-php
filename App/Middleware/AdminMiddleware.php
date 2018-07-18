@@ -21,7 +21,7 @@ class AdminMiddleware
         $auth = new Auth();
 
         $user = $auth->getUser();
-        if($user->role != 'admin') {
+        if($user->role->name != 'admin') {
             throw new Error404Exception();
         }
 
