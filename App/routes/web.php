@@ -25,6 +25,7 @@ $router->get('/cart/decrement', [new Controllers\CartController(), 'decrement'])
 $router->get('/test', function () {
 
     var_dump(
+
         \App\Models\Product::query()
             ->where('id', '>', 20)
             ->where('title', 'like', '%car%')
@@ -32,6 +33,7 @@ $router->get('/test', function () {
             ->limit(4)
             ->offset(1)
             ->get()
+
     );
 });
 

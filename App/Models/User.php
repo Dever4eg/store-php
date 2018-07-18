@@ -22,10 +22,9 @@ class User extends ActiveRecordModel
     {
         $db = self::getDB();
 
-        $sql = 'SELECT users.*, roles.name as role FROM ' . self::getTableName() .
-            ' INNER JOIN ' . Role::getTableName() . ' ON users.role_id=roles.id'.
+        $sql = 'SELECT users.*, roles.name as role FROM  users, roles'.
+            ' WHERE users.role_id=roles.id'.
             self::addSqlParams($params);
-
 
         return $db->query($sql);
     }
@@ -36,9 +35,9 @@ class User extends ActiveRecordModel
     {
         $db = self::getDB();
 
-        $sql = 'SELECT users.*, roles.name as role FROM ' . self::getTableName() .
-            ' INNER JOIN ' . Role::getTableName() . ' ON users.role_id=roles.id'.
-            ' WHERE users.id=:id';
+        $sql = 'SELECT users.*, roles.name as role FROM users, '. Role::getTableName().
+            ' WHERE users.role_id='. Role::getTableName() . '.id'.
+            ' AND users.id=:id';
 
 
         $res = $db->query($sql, ['id' => $id]);

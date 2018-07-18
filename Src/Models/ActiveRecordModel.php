@@ -11,6 +11,7 @@ namespace Src\Models;
 
 use Src\App;
 use Src\DB;
+use Src\Exceptions\Http\Error404Exception;
 
 abstract class ActiveRecordModel extends Model
 {
@@ -33,13 +34,6 @@ abstract class ActiveRecordModel extends Model
         return $db;
     }
 
-    public static function query()
-    {
-        return new QueryBuilder( get_called_class(), self::getDB());
-    }
-
-
-
     protected static function addSqlParams($params = [])
     {
         $sql = '';
@@ -56,40 +50,24 @@ abstract class ActiveRecordModel extends Model
         return $sql;
     }
 
+    public static function query()
+    {
+        return new QueryBuilder( get_called_class());
+    }
+
 
     public static function all($params = [])
     {
-        $db = self::getDB();
-
-        $sql = 'SELECT * FROM ' . self::getTableName() . self::addSqlParams($params);
-
-        return $db->query($sql);
+        return self::query()->get();
     }
 
     public static function getById($id)
     {
-        $db = self::getDB();
+        $result = self::query()->where('id', '=', $id)->get();
 
-        $sql = 'SELECT * FROM ' . self::getTableName() . ' WHERE id=:id';
-        $res = $db->query($sql, ['id' => $id]);
-
-        return empty($res) ? false : $res[0];
+        return empty($result) ? null : $result[0];
     }
 
-
-    public static function findByColumn($col, $value, $params = [])
-    {
-        $db = self::getDB();
-
-        $sql = 'SELECT * FROM ' . self::getTableName() . ' WHERE ' . $col . '=:'.$col;
-        $pdo_params[':'.$col] = $value;
-
-        $sql .= self::addSqlParams($params);
-
-        $res = $db->query($sql, $pdo_params);
-
-        return $res;
-    }
 
     public function save()
     {

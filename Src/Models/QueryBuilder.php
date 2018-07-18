@@ -133,6 +133,7 @@ class QueryBuilder
 
     public function get()
     {
-        return $this->db->query($this->getSql(), $this->pdo_params);
+       $result = $this->db->query($this->getSql(), $this->pdo_params);
+        return empty($result) ? false : $result;
     }
 }

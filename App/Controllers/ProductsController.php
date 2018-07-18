@@ -15,6 +15,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Src\App;
 use Src\Authorization\Auth;
 use Src\Controller;
+use Src\Exceptions\Http\Error404Exception;
 use Src\View;
 use Zend\Diactoros\Response\HtmlResponse;
 
@@ -22,10 +23,10 @@ class ProductsController extends Controller
 {
     public function index(ServerRequestInterface $request)
     {
-        $products = Product::all([
-            'limit' => 12,
-            'offset' => $request->getQueryParams()['page'] ?? 1,
-        ]);
+        $products = Product::query()
+            ->limit(12)
+            ->offset($request->getQueryParams()['page'] ?? 0)
+            ->get();
 
         return (new View("main") )
             ->withParam("products", $products)
@@ -34,7 +35,12 @@ class ProductsController extends Controller
 
     public function show(ServerRequestInterface $request)
     {
-        $product = Product::getById($request->getQueryParams()['id']);
+        $id = $request->getQueryParams()['id'];
+        $product = Product::getById($id);
+
+        if(empty($product)) {
+            throw new Error404Exception();
+        }
 
         return (new View("product"))
             ->withParam("product", $product)
