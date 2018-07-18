@@ -28,7 +28,11 @@ class AuthController extends Controller
 
         // TODO: validation
 
-        $user = User::getByColsWithRole(['email' => $email, 'password' => User::HashPassword($password)]);
+        $user = User::query()
+            ->with('role')
+            ->where('email', '=', $email)
+            ->where('password', '=', User::hashPassword($password))
+            ->one();
 
         if(empty($user)) {
             App::getSession()->setFlashMessage(new FlashMessage(

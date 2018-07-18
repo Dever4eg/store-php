@@ -23,15 +23,15 @@ class UserRoleSeeder extends AbstractSeed
 
         $user = new User();
         $user->email = 'admin@admin.com';
-        $user->password = User::HashPassword('password');
-        $user->role_id = Role::findByColumn('name', 'admin')[0]->id;
+        $user->password = User::hashPassword('password');
+        $user->role_id = Role::query()->where('name', '=', 'admin')[0]->id;
         $user->save();
 
         for($i = 0; $i < 10; $i++) {
             $user = new User();
             $user->email = 'customer'.$i.'@user.com';
-            $user->password = User::HashPassword('password');
-            $user->role_id = Role::findByColumn('name', 'customer')[0]->id;
+            $user->password = User::hashPassword('password');
+            $user->role_id = Role::query()->where('name', '=', 'customer')[0]->id;
             $user->save();
         }
     }

@@ -21,6 +21,19 @@ $router->get('/cart/increment', [new Controllers\CartController(), 'increment'])
 $router->get('/cart/decrement', [new Controllers\CartController(), 'decrement']);
 
 
+
+$router->get('/test', function () {
+
+    var_dump(
+
+        \App\Models\User::query()
+            ->with('role')
+            ->get()
+
+    );
+});
+
+
 // only authorized users
 $router->group(function (Router $router) {
 

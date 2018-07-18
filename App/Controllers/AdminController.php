@@ -17,8 +17,7 @@ class AdminController
 {
     public function users()
     {
-        $users = User::allWithRole();
-
+        $users = User::query()->with('role')->get();
 
         $view = new View('admin/users');
         $view->withParam('users', $users);
