@@ -18,32 +18,37 @@ use Src\View;
 
 class AdminController
 {
-    public function users()
+    public function users(ServerRequestInterface $request)
     {
-        $users = User::query()->with('role')->get();
+        $users = User::query()->with('role')->paginate(10, $request);
 
         $view = new View('admin/users');
-        $view->withParam('users', $users);
+        $view->withParam('users', $users['results'])
+            ->withParam('pagination', $users);
 
         return $view->getHtmlResponse();
     }
 
-    public function products()
+    public function products(ServerRequestInterface $request)
     {
-        $products = Product::all();
+        $products = Product::query()->paginate(10, $request);
 
         $view = new View('admin/products');
-        $view->withParam('products', $products);
+        $view->withParam('products', $products['results'])
+            ->withParam('pagination', $products);
 
         return $view->getHtmlResponse();
     }
 
-    public function orders()
+    public function orders(ServerRequestInterface $request)
     {
-        $orders = Order::query()->with('user')->get();
+        $orders = Order::query()
+            ->with('user')
+            ->paginate(10, $request);
 
         $view = new View('admin/orders');
-        $view->withParam('orders', $orders);
+        $view->withParam('orders', $orders['results'])
+            ->withParam('pagination', $orders);
 
         return $view->getHtmlResponse();
     }

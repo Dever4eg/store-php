@@ -17,16 +17,17 @@ use Src\View;
 
 class UsersController
 {
-    public function account()
+    public function account(ServerRequestInterface $request)
     {
         $user = (new Auth)->getUser();
         $orders = Order::query()
             ->where('user_id', '=', $user->id)
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10, $request);
 
         $view = new View('account/orders');
-        $view->withParam('orders', $orders);
+        $view->withParam('orders', $orders['results'])
+            ->withParam('pagination', $orders);
 
         return $view->getHtmlResponse();
     }
