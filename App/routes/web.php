@@ -26,8 +26,8 @@ $router->get('/test', function () {
 
     var_dump(
 
-        \App\Models\User::query()
-            ->with('role')
+        \App\Models\Role::query()
+            ->with('users')
             ->get()
 
     );
