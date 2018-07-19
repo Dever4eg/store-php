@@ -252,10 +252,10 @@ class QueryBuilder
 
     public function paginate(int $perPage, ServerRequestInterface $request)
     {
-        $page = $request->getQueryParams()['page'] ?? 0;
+        $page = $request->getQueryParams()['page'] ?? 1;
 
         $this->limit($perPage);
-        $this->offset($perPage*$page);
+        $this->offset($perPage*($page-1));
 
         $results = $this->get();
         $count = (int)$this->count();
@@ -271,10 +271,10 @@ class QueryBuilder
             'last_page'     => $last_page,
             'path'          => $path,
 
-            "first_page_url"    => $path.'?page=0',
+            "first_page_url"    => $path.'?page=1',
             "last_page_url"     => $path.'?page='.$last_page,
             "next_page_url"     => $page < $last_page ? $path.'?page='.($page+1) : null,
-            "prev_page_url"     => $page > 0 ? $path.'?page='.($page-1) : null,
+            "prev_page_url"     => $page > 1 ? $path.'?page='.($page-1) : null,
 
              "results"       => $results,
         ];

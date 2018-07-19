@@ -4,6 +4,7 @@
     <div class="row">
         <div class="col-md-12">
 
+
             {% for i, product in products %}
 
                 {# Группируем карточки по 3 в деку. Открываем тег на первую итерацию из каждой тройки #}
@@ -32,6 +33,9 @@
             {% else %}
                 <h4>Products is not exist</h4>
             {% endfor %}
+
+            {% include "pagination.twig" %}
+
 
         </div>
     </div>
