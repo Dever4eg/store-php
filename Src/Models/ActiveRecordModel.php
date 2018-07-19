@@ -10,6 +10,8 @@ namespace Src\Models;
 
 
 use Src\App;
+use Src\DB;
+use Src\Exceptions\Http\Error404Exception;
 
 abstract class ActiveRecordModel extends Model
 {
@@ -25,13 +27,12 @@ abstract class ActiveRecordModel extends Model
 
     protected static function getDB()
     {
-        $db = App::getDB();
+        $db = DB::instance();
         $class = get_called_class();
         $db->setObjectClass($class);
 
         return $db;
     }
-
 
     protected static function addSqlParams($params = [])
     {
@@ -49,40 +50,24 @@ abstract class ActiveRecordModel extends Model
         return $sql;
     }
 
+    public static function query()
+    {
+        return new QueryBuilder( get_called_class());
+    }
+
 
     public static function all($params = [])
     {
-        $db = self::getDB();
-
-        $sql = 'SELECT * FROM ' . self::getTableName() . self::addSqlParams($params);
-
-        return $db->query($sql);
+        return self::query()->get();
     }
 
     public static function getById($id)
     {
-        $db = self::getDB();
+        $result = self::query()->where('id', '=', $id)->get();
 
-        $sql = 'SELECT * FROM ' . self::getTableName() . ' WHERE id=:id';
-        $res = $db->query($sql, ['id' => $id]);
-
-        return empty($res) ? false : $res[0];
+        return empty($result) ? null : $result[0];
     }
 
-
-    public static function findByColumn($col, $value, $params = [])
-    {
-        $db = self::getDB();
-
-        $sql = 'SELECT * FROM ' . self::getTableName() . ' WHERE ' . $col . '=:'.$col;
-        $pdo_params[':'.$col] = $value;
-
-        $sql .= self::addSqlParams($params);
-
-        $res = $db->query($sql, $pdo_params);
-
-        return $res;
-    }
 
     public function save()
     {
@@ -120,5 +105,10 @@ abstract class ActiveRecordModel extends Model
 
         $db->execute($sql, $params);
         $this->id = $db->getLastInsertId();
+    }
+
+    public static function hasOne($model_class, $foreign_key, $reference_key)
+    {
+        return new RelationShip(RelationShip::HAS_ONE, $model_class, $foreign_key, $reference_key);
     }
 }
