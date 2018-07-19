@@ -13,5 +13,10 @@ use Src\Models\ActiveRecordModel;
 
 class Role extends ActiveRecordModel
 {
-
+    public function relations()
+    {
+        return [
+            'users' => self::hasMany(User::class, 'role_id', 'id')
+        ];
+    }
 }

@@ -15,7 +15,7 @@ class User extends ActiveRecordModel
     public static function relations()
     {
         return [
-            "role" => self::hasOne(Role::class, 'role_id', 'id'),
+            "role" => self::belongsTo(Role::class, 'role_id', 'id'),
         ];
     }
 
