@@ -100,8 +100,7 @@ abstract class ActiveRecordModel
             ' SET ' . implode(', ', $params_str) .
             ' WHERE id=:id';
 
-        $db->execute($sql, $params);
-        $this->id = $db->getLastInsertId();
+        return $db->execute($sql, $params);
     }
 
     /**
