@@ -6,12 +6,8 @@
  * Time: 0:39
  */
 
-namespace Src\Models;
+namespace Src\Database;
 
-
-use Dever4eg\Logger;
-use Src\App;
-use Src\DB;
 
 class QueryBuilder
 {
@@ -40,13 +36,7 @@ class QueryBuilder
 
     public function with($relation)
     {
-        $relations = ($this->class)::relations();
-
-        if(!array_key_exists($relation, $relations)) {
-            throw new QueryBuilderException('Relation \''. $relation . '\' not fount in '. $this->class);
-        }
-
-        $this->with[$relation] = $relations[$relation];
+        $this->with[$relation] = ($this->class)::getRelation($relation);
 
         return $this;
     }
@@ -183,7 +173,7 @@ class QueryBuilder
         }
         $rks = array_unique($rks);
 
-        $query = ( new QueryBuilder($class) )
+        $query = $class::query()
             ->where($rk, 'IN', '('.implode(', ', $rks).')')
             ->get();
 
@@ -207,7 +197,7 @@ class QueryBuilder
         }
         $rks = array_unique($rks);
 
-        $query = (new QueryBuilder($class))
+        $query = $class::query()
             ->where($fk, 'IN', '('.implode(',', $rks ).')')
             ->get();
 

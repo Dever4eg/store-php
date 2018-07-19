@@ -14,17 +14,19 @@
     </thead>
     <tbody>
 
-    {% for product in products %}
+        {% for product in products %}
 
-        <tr>
-            <td>{{ product.id}}</td>
-            <td><img src="{{ product.image }}" alt="" class="img-fluid"></td>
-            <td>{{ product.title }}</td>
-            <td>{{ product.description|slice(0, 200) }}...</td>
-            <td class="price">${{ product.price }}</td>
-        </tr>
+            <tr>
+                <td>{{ product.id}}</td>
+                <td><img src="{{ product.image }}" alt="" class="img-fluid"></td>
+                <td>{{ product.title }}</td>
+                <td>{{ product.description|slice(0, 200) }}...</td>
+                <td class="price">${{ product.price }}</td>
+            </tr>
 
-    {% else %}
-        <h4>Products not found</h4>
-    {% endfor %}
+        {% else %}
+            <h4>Products not found</h4>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

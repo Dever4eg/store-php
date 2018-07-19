@@ -11,21 +11,38 @@ namespace App\Controllers;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\OrderedProducts;
 use Psr\Http\Message\ServerRequestInterface;
+use Src\App;
 use Src\Authorization\Auth;
 use Src\Controller;
+use Src\Session\FlashMessage;
+use Zend\Diactoros\Response\RedirectResponse;
 
 class OrdersController extends Controller
 {
     public function new()
     {
-        $products = (new Cart())->all();
+        $cart = new Cart();
         $user = (new Auth())->getUser();
 
         $order = new Order();
-//        $order->
+        $order->cost = $cart->sum();
+        $order->associate('user', $user)->save();
 
-        var_dump($user);
-        var_dump($products);
+        $products = OrderedProducts::fromCart($cart);
+        $products = $order->associate('products', $products);
+
+        $cart->clear();
+
+        OrderedProducts::insertArray($products);
+
+        App::getSession()->setFlashMessage(new FlashMessage(
+            'success',
+            'Success',
+            'Your products success ordered'
+        ));
+
+        return new RedirectResponse('/account');
     }
 }

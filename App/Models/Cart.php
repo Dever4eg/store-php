@@ -93,4 +93,9 @@ class Cart
         return $sum;
     }
 
+    public function clear()
+    {
+        App::getSession()->set('cart', []);
+    }
+
 }

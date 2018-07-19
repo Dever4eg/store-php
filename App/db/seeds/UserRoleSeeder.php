@@ -2,7 +2,7 @@
 
 
 use Phinx\Seed\AbstractSeed;
-use \App\Models\User;
+use App\Models\User;
 use App\Models\Role;
 
 class UserRoleSeeder extends AbstractSeed

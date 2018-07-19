@@ -39,8 +39,9 @@ $router->group(function (Router $router) {
 
     // Only customers
     $router->group(function (Router $router) {
-        $router->get('/account',    [new View("account"), 'getHtmlResponse']);
-        $router->post('/order',     [new Controllers\OrdersController(), 'new']);
+        $router->get('/account',        [new Controllers\UsersController(), 'account']);
+        $router->get('/account/order',  [new Controllers\UsersController(), 'order']);
+        $router->post('/order',         [new Controllers\OrdersController(), 'new']);
     }, ['middleware' => 'customer']);
 
     // Only admins

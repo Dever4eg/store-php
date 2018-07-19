@@ -9,14 +9,17 @@
 namespace App\Models;
 
 
-use Src\Models\ActiveRecordModel;
+
+use Src\Database\ActiveRecordModel;
 
 class Order extends ActiveRecordModel
 {
     public static function relations()
     {
         return [
-//            'products'  => $this->hasMany
+            'user'  => self::belongsTo(User::class, 'user_id', 'id'),
+            'products'  => self::hasMany(OrderedProducts::class, 'order_id', 'id')
         ];
+
     }
 }

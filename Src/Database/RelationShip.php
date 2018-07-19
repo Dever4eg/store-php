@@ -6,7 +6,7 @@
  * Time: 13:14
  */
 
-namespace Src\Models;
+namespace Src\Database;
 
 
 class RelationShip
