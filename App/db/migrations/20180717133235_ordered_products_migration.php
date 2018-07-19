@@ -3,11 +3,11 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class OrdersProductsMigration extends AbstractMigration
+class OrderedProductsMigration extends AbstractMigration
 {
     public function up()
     {
-        $this->table('orders_products')
+        $this->table('ordered_products')
             ->addColumn('order_id', 'integer')
             ->addColumn('product_id', 'integer')
             ->addColumn('price', 'integer')
@@ -19,7 +19,7 @@ class OrdersProductsMigration extends AbstractMigration
 
     public function down()
     {
-        $this->table('orders_products')
+        $this->table('ordered_products')
             ->drop()
             ->save();
     }

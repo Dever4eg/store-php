@@ -10,15 +10,20 @@ namespace App\Controllers;
 
 
 use App\Models\Cart;
+use App\Models\Order;
 use Psr\Http\Message\ServerRequestInterface;
 use Src\Authorization\Auth;
+use Src\Controller;
 
-class OrdersController
+class OrdersController extends Controller
 {
     public function new()
     {
         $products = (new Cart())->all();
         $user = (new Auth())->getUser();
+
+        $order = new Order();
+//        $order->
 
         var_dump($user);
         var_dump($products);
