@@ -60,7 +60,7 @@ class App
             $response = $middleware->run($request, $match->handler);
 
         } catch (Error404Exception $e) {
-            $response = (new view('error404', __DIR__.'/views'))->getHtmlResponse();
+            $response = (new view('errors/error404'))->getHtmlResponse();
         } finally {
             if(
                 empty(ob_get_length()) && isset($response ) && $response instanceof ResponseInterface) {

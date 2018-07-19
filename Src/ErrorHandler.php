@@ -44,10 +44,7 @@ class ErrorHandler
         App::getLogger()->log($errors[$errno].': '. $message. ' in file:'. $file.':'.$line, 'error');
 
         (new SapiEmitter())->emit(
-            (new View(
-                "server_error",
-                __DIR__.'/views'
-            ))->getHtmlResponse()->withStatus(500)
+            (new View("error500"))->getHtmlResponse()->withStatus(500)
         );
 
         return true;

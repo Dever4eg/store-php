@@ -22,12 +22,13 @@ class View
     protected $path;
     protected $extension = "twig";
 
-    public function __construct($view, $template_dir = null)
+    public function __construct($view)
     {
-        if(!empty($template_dir)) {
-            $this->path[] = $template_dir;
-        }
-        $this->path[] = App::getConfig()->get('views_dir') ?? APP_PATH . '/views';
+
+        $this->path = [
+            App::getConfig()->get('views_dir') ?? APP_PATH . '/views',
+            __DIR__.'/views',
+        ];
 
         $this->view = $view . '.' . $this->extension;
 
