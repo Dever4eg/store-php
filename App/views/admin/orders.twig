@@ -1,12 +1,12 @@
-{% extends "/layouts/main.twig" %}
+{% extends "/layouts/admin.twig" %}
 
 {% block content %}
-    <h3>User account</h3>
 
     <table class="table">
         <thead>
         <tr>
             <th scope="col">Id</th>
+            <th scope="col">User</th>
             <th scope="col">Date</th>
             <th scope="col">Price</th>
             <th scope="col"></th>
@@ -20,20 +20,17 @@
             <tr>
                 <a href="/">
                     <td>{{ order.id}}</td>
+                    <td>{{ order.user.email }}</td>
                     <td>{{ order.created_at}}</td>
                     <td class="price">${{ order.cost }}</td>
-                    <td><a href="/account/order?id={{ order.id }}">Details</a></td>
+                    <td><a href="/admin/order?id={{ order.id }}">Details</a></td>
                 </a>
             </tr>
 
 
 
         {% else %}
-            <tr>
-                <td>
-                    <h4>Orders not found</h4>
-                </td>
-            </tr>
+            <h4>Orders not found</h4>
         {% endfor %}
 
 
