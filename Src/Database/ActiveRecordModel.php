@@ -6,16 +6,13 @@
  * Time: 23:19
  */
 
-namespace Src\Models;
+namespace Src\Database;
 
 
-use Src\App;
-use Src\DB;
-use Src\Exceptions\Http\Error404Exception;
 
-abstract class ActiveRecordModel extends Model
+abstract class ActiveRecordModel
 {
-    static $table = null;
+    public static $table = null;
 
     public static function getTableName()
     {
@@ -105,6 +102,74 @@ abstract class ActiveRecordModel extends Model
 
         $db->execute($sql, $params);
         $this->id = $db->getLastInsertId();
+    }
+
+    /**
+     * @param $relation
+     * @return RelationShip
+     * @throws QueryBuilderException
+     */
+    public static function getRelation($relation)
+    {
+        $relations = static::relations();
+
+        if(!array_key_exists($relation, $relations)) {
+            throw new QueryBuilderException('Relation \''. $relation . '\' not fount in '. self::class);
+        }
+        return $relations[$relation];
+    }
+
+    public function associate($relation, $model)
+    {
+        $r = self::getRelation($relation);
+
+        $fk = $r->getForeignKey();
+        $rk = $r->getReferenceKey();
+        $type = $r->getType();
+
+        switch ($type) {
+            case RelationShip::BELONGS_TO:
+                $this->$fk = $model->$rk;
+                return $this;
+            case RelationShip::HAS_MANY:
+                if(is_array($model)) {
+                    foreach ($model as $item) {
+                        $this->associate($relation, $item);
+                    }
+                } else {
+                    $model->$fk = $this->$rk;
+                }
+                return $model;
+        }
+
+
+        return $this;
+    }
+
+    public static function insertArray(array $models)
+    {
+        $db = self::getDB();
+
+        $params = array_keys(get_object_vars($models[0]));
+
+        $pdo_params = [];
+        $sql_items = [];
+
+        foreach ($models as $k => $item) {
+            $keys = [];
+            foreach ($params as $param) {
+               $keys[] = ':'.$param . $k;
+               $pdo_params[$param . $k]= $item->$param;
+            }
+            $sql_items[] .= '(' . implode(', ', $keys ) . ')';
+        }
+
+        $sql = 'INSERT INTO '. self::getTableName() .
+            ' ('. implode(', ', $params) .')'.
+            ' VALUES ' . implode(', ', $sql_items);
+
+
+        $db->execute($sql, $pdo_params);
     }
 
     public static function hasOne($model_class, $foreign_key, $reference_key)

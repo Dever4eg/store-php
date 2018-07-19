@@ -39,7 +39,9 @@ $router->group(function (Router $router) {
 
     // Only customers
     $router->group(function (Router $router) {
-        $router->get('/account',    [new View("account"), 'getHtmlResponse']);
+        $router->get('/account',        [new Controllers\UsersController(), 'account']);
+        $router->get('/account/order',  [new Controllers\UsersController(), 'order']);
+        $router->post('/order',         [new Controllers\OrdersController(), 'new']);
     }, ['middleware' => 'customer']);
 
     // Only admins
@@ -47,6 +49,8 @@ $router->group(function (Router $router) {
         $router->get('/admin',          [new View('/admin/dashboard'),     'getHtmlResponse']);
         $router->get('/admin/users',    [new App\Controllers\AdminController(),  'users']);
         $router->get('/admin/products', [new App\Controllers\AdminController(),  'products']);
+        $router->get('/admin/orders',   [new App\Controllers\AdminController(),  'orders']);
+        $router->get('/admin/order',    [new Controllers\AdminController(),     'order']);
     }, ['middleware' => 'admin']);
 
     $router->get('/logout',     [new Controllers\AuthController(), 'logout']);

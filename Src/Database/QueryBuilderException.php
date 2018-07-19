@@ -6,7 +6,7 @@
  * Time: 1:28
  */
 
-namespace Src\Models;
+namespace Src\Database;
 
 
 use Src\Exceptions\BaseException;

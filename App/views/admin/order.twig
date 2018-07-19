@@ -1,0 +1,48 @@
+{% extends "/layouts/admin.twig" %}
+
+{% block content %}
+
+    <h4>
+        Order #{{ order.id }} Products
+        <a class="btn btn-primary" href="/admin/orders">All orders</a>
+    </h4>
+
+    <h5>User: {{ order.user.email }}</h5>
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col" width="15%">Image</th>
+            <th scope="col">Title</th>
+            <th scope="col">Descriptopn</th>
+            <th scope="col">Price</th>
+            <th scope="col">Count</th>
+            <th scope="col">Summary</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for product in products %}
+
+            <tr>
+                <td><img src="{{ product.image }}" alt="" class="img-fluid"></td>
+                <td><a href="/details?id={{ product.id }}">{{ product.title }}</a></td>
+                <td>{{ product.description|slice(0, 200) }}...</td>
+                <td class="price">${{ product.price }}</td>
+                <td >{{ product.count }}</td>
+                <td class="price">${{ product.count*product.price }}</td>
+            </tr>
+
+        {% else %}
+            <h4>Products not found</h4>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h4>Summary price: <span class="price">${{ order.cost }}</span></h4>
+
+    <p>Date: {{ order.created_at }}</p>
+
+
+{% endblock %}

@@ -6,9 +6,10 @@
  * Time: 23:19
  */
 
-namespace Src;
+namespace Src\Database;
 
 
+use Src\App;
 use Src\Traits\Singleton;
 use PDO;
 

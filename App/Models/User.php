@@ -4,9 +4,7 @@
 namespace App\Models;
 
 
-use Src\Models\ActiveRecordModel;
-use Src\Models\RelationShip;
-
+use Src\Database\ActiveRecordModel;
 
 class User extends ActiveRecordModel
 {

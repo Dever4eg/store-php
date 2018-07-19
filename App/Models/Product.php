@@ -9,7 +9,7 @@
 namespace App\Models;
 
 
-use Src\Models\ActiveRecordModel;
+use Src\Database\ActiveRecordModel;
 
 class Product extends ActiveRecordModel
 {
