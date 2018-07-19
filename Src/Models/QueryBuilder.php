@@ -170,7 +170,7 @@ class QueryBuilder
          * @var RelationShip $relation
          */
         foreach ($this->with as $alias => $relation) {
-            if($relation->getType() === RelationShip::HAS_ONE) {
+            if($relation->getType() === RelationShip::BELONGS_TO) {
 
                 $class  = $relation->getModelClass();
                 $fk     = $relation->getForeignKey();
