@@ -23,13 +23,12 @@ class ProductsController extends Controller
 {
     public function index(ServerRequestInterface $request)
     {
-        $products = Product::query()
-            ->limit(12)
-            ->offset($request->getQueryParams()['page'] ?? 0)
-            ->get();
+        $products = Product::query()->paginate(12, $request);
+
 
         return (new View("main") )
-            ->withParam("products", $products)
+            ->withParam("products", $products['results'])
+            ->withParam("pagination", $products)
             ->getHtmlResponse();
     }
 

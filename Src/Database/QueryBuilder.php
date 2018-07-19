@@ -9,6 +9,9 @@
 namespace Src\Database;
 
 
+use Psr\Http\Message\ServerRequestInterface;
+use Src\App;
+
 class QueryBuilder
 {
     private $db;
@@ -234,5 +237,46 @@ class QueryBuilder
         $result = $this->get();
 
         return empty($result) ? null : $result[0];
+    }
+
+    public function count()
+    {
+        $sql = "SELECT count(*) as count ".
+            "FROM ". $this->table .
+            $this->SqlGenWhere();
+
+        $count =  $this->db->query($sql, $this->pdo_params);
+
+        return $count[0]->count;
+    }
+
+    public function paginate(int $perPage, ServerRequestInterface $request)
+    {
+        $page = $request->getQueryParams()['page'] ?? 0;
+
+        $this->limit($perPage);
+        $this->offset($perPage*$page);
+
+        $results = $this->get();
+        $count = (int)$this->count();
+
+        $last_page = (int)ceil($count/$perPage);
+
+        $path = App::getRouter()->getMatch($request)->url;
+
+        return [
+            'total'         => $count,
+            'per_page'      => $perPage,
+            'current_page'  => $page,
+            'last_page'     => $last_page,
+            'path'          => $path,
+
+            "first_page_url"    => $path.'?page=0',
+            "last_page_url"     => $path.'?page='.$last_page,
+            "next_page_url"     => $page < $last_page ? $path.'?page='.($page+1) : null,
+            "prev_page_url"     => $page > 0 ? $path.'?page='.($page-1) : null,
+
+             "results"       => $results,
+        ];
     }
 }
