@@ -111,4 +111,15 @@ abstract class ActiveRecordModel extends Model
     {
         return new RelationShip(RelationShip::HAS_ONE, $model_class, $foreign_key, $reference_key);
     }
+
+    public static function hasMany($model_class, $foreign_key, $reference_key)
+    {
+        return new RelationShip(RelationShip::HAS_MANY, $model_class, $foreign_key, $reference_key);
+    }
+
+    public static function belongsTo($model_class, $foreign_key, $reference_key)
+    {
+        return new RelationShip(RelationShip::BELONGS_TO, $model_class, $foreign_key, $reference_key);
+    }
+
 }

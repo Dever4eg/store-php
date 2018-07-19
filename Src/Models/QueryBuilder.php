@@ -154,6 +154,75 @@ class QueryBuilder
         return $sql;
     }
 
+    private function fetchRelated($object)
+    {
+        /**
+         * @var RelationShip $relation
+         */
+        foreach ($this->with as $alias => $relation) {
+
+            $class  = $relation->getModelClass();
+            $fk     = $relation->getForeignKey();
+            $rk     = $relation->getReferenceKey();
+            $type   = $relation->getType();
+
+            switch($type) {
+                case RelationShip::BELONGS_TO:  $this->fetchBelongsTo($object, $alias, $fk, $rk, $class);   break;
+                case RelationShip::HAS_MANY:    $this->fetchHasMany($object, $alias, $fk, $rk, $class);     break;
+            }
+        }
+    }
+
+
+    private function fetchBelongsTo($objects, $alias, $fk, $rk, $class)
+    {
+        // Получаем ключи которые нужно быбрать для всех обьектов
+        $rks = [];
+        foreach ($objects as $row) {
+            $rks[] = $row->$fk;
+        }
+        $rks = array_unique($rks);
+
+        $query = ( new QueryBuilder($class) )
+            ->where($rk, 'IN', '('.implode(', ', $rks).')')
+            ->get();
+
+        $related = [];
+
+        foreach ($query as $row) {
+            $related[$row->id] = $row;
+        }
+
+        // Записываем значения в исходный обьект
+        foreach ($objects as $row) {
+            $row->$alias = $related[$row->$fk];
+        }
+    }
+
+    private function fetchHasMany($objects, $alias, $fk, $rk, $class)
+    {
+        $rks = [];
+        foreach ($objects as $object) {
+            $rks[] =$object->$rk;
+        }
+        $rks = array_unique($rks);
+
+        $query = (new QueryBuilder($class))
+            ->where($fk, 'IN', '('.implode(',', $rks ).')')
+            ->get();
+
+        $related = [];
+
+        foreach ($query as $row) {
+            $related[$row->$fk][] = $row;
+        }
+
+        // Записываем значения в исходный обьект
+        foreach ($objects as $row) {
+            $row->$alias = $related[$row->$rk];
+        }
+    }
+
     public function get()
     {
         $result = $this->db->query($this->getSql(), $this->pdo_params);
@@ -162,42 +231,9 @@ class QueryBuilder
            return null;
         }
 
-        if(empty($this->with)) {
-           return $result;
+        if(!empty($this->with)) {
+           $this->fetchRelated($result);
         }
-
-        /**
-         * @var RelationShip $relation
-         */
-        foreach ($this->with as $alias => $relation) {
-            if($relation->getType() === RelationShip::HAS_ONE) {
-
-                $class  = $relation->getModelClass();
-                $fk     = $relation->getForeignKey();
-                $rk     = $relation->getReferenceKey();
-
-                $rks = [];
-                foreach ($result as $row) {
-                    $rks[] = $row->$fk;
-                }
-                $rks = array_unique($rks);
-
-                $query = ( new QueryBuilder($class) )
-                    ->where($rk, 'IN', '('.implode(', ', $rks).')')
-                    ->get();
-
-                $related = [];
-
-                foreach ($query as $row) {
-                    $related[$row->id] = $row;
-                }
-
-                foreach ($result as $row) {
-                    $row->$alias = $related[$row->$fk];
-                }
-            }
-        }
-
 
         return $result;
     }
