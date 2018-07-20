@@ -51,6 +51,9 @@ $router->group(function (Router $router) {
         $router->get('/admin/products', [new App\Controllers\AdminController(),  'products']);
         $router->get('/admin/orders',   [new App\Controllers\AdminController(),  'orders']);
         $router->get('/admin/order',    [new Controllers\AdminController(),     'order']);
+
+        $router->get('/admin/products/new',    [new Controllers\ProductsController(),     'create']);
+        $router->post('/admin/products/new',    [new Controllers\ProductsController(),    'store']);
     }, ['middleware' => 'admin']);
 
     $router->get('/logout',     [new Controllers\AuthController(), 'logout']);

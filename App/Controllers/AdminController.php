@@ -33,7 +33,7 @@ class AdminController
     {
         $products = Product::query()->paginate(10, $request);
 
-        $view = new View('admin/products');
+        $view = new View('admin/products/index');
         $view->withParam('products', $products['results'])
             ->withParam('pagination', $products);
 

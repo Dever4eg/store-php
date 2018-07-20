@@ -49,4 +49,16 @@ class ProductsController extends Controller
             ->withParam("product", $product)
             ->getHtmlResponse();
     }
+
+    public function create()
+    {
+        $view = new View('admin/products/new');
+        return $view->getHtmlResponse();
+    }
+
+    public function store(ServerRequestInterface $request)
+    {
+        var_dump($request->getParsedBody());die;
+    }
+
 }
