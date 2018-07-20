@@ -34,12 +34,16 @@ class ProductsController extends Controller
 
     public function show(ServerRequestInterface $request)
     {
-        $id = $request->getQueryParams()['id'];
-        $product = Product::getById($id);
+        $r = $request->getQueryParams();
+        $v =$this->validate($r, [
+            'id'    => "required",
+        ]);
+        if($v->fails()) throw new Error404Exception();
 
-        if(empty($product)) {
-            throw new Error404Exception();
-        }
+        $product = Product::getById($r['id']);
+
+        if(empty($product)) throw new Error404Exception();
+
 
         return (new View("product"))
             ->withParam("product", $product)

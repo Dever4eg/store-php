@@ -20,6 +20,11 @@ class DB
     private $pdo;
     private $obj_class = \stdClass::class;
 
+    public function getPDO()
+    {
+        return $this->pdo;
+    }
+
     private function __construct()
     {
         $config = App::getConfig()->get('database');
