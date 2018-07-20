@@ -16,7 +16,7 @@
                     <img class="card-img-top " src="{{ product.image }}">
                     <div class="card-body">
                         <h5 class="card-title"> {{ product.title }} </h5>
-                        <p>{{ product.description|raw|slice(0,200) }}</p>
+                        <p>{{ product.description|slice(0,100)|raw }}</p>
                         <h4 class="float-right price">${{ product.price }}</h4>
                     </div>
                     <div class="card-footer">

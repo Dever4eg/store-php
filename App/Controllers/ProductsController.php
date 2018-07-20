@@ -28,7 +28,7 @@ class ProductsController extends Controller
         $products = Product::query()->paginate(12, $request);
 
 
-        return (new View("main") )
+        return (new View("products/index") )
             ->withParam("products", $products['results'])
             ->withParam("pagination", $products)
             ->getHtmlResponse();
@@ -47,7 +47,7 @@ class ProductsController extends Controller
         if(empty($product)) throw new Error404Exception();
 
 
-        return (new View("product"))
+        return (new View("products/show"))
             ->withParam("product", $product)
             ->getHtmlResponse();
     }
