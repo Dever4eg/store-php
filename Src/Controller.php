@@ -9,6 +9,8 @@
 namespace Src;
 
 
+use Progsmile\Validator\Helpers\ValidatorFacade;
+use Src\Session\FlashMessage;
 use Src\Validation\Validator;
 
 abstract class Controller
@@ -19,5 +21,12 @@ abstract class Controller
         $validator = new Validator();
         $db_needed && $validator->initDB();
         return $validator->validate($params, $rules, $messages = []);
+    }
+
+    public function setValidationMessages(ValidatorFacade $validator)
+    {
+        App::getSession()->setFlashMessage(
+            new FlashMessage('error', 'Validation error', $validator->first())
+        );
     }
 }
