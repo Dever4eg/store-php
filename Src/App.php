@@ -11,12 +11,14 @@ namespace Src;
 
 use Psr\Http\Message\ResponseInterface;
 use Src\App\AppSingleComponent;
+use Src\Database\DB;
 use src\Exceptions\Http\Error404Exception;
 use Src\Middleware\MiddlewareHandler;
 use Src\Routing\Router;
 use Src\Logging\Logger;
 use Src\Session\Session;
 use Src\Traits\Singleton;
+use Src\View\ViewConfig;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
@@ -29,7 +31,8 @@ use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
  * @method static Config getConfig()
  * @method static Logger getLogger()
  * @method static MiddlewareHandler getMiddleware()
- * @method static Db getDB()
+ * @method static DB getDB()
+ * @method static ViewConfig getViewConfig()
  */
 class App
 {
@@ -79,6 +82,7 @@ class App
             'Logger'        => Logger::class,
             'Middleware'    => MiddlewareHandler::class,
             'Db'            => DB::class,
+            'ViewConfig'    => ViewConfig::class,
         ]);
     }
 
@@ -101,7 +105,7 @@ class App
         if(!preg_match("#^get(?P<class>\w+)#", $name, $match))
             die("error get dependency");
 
-        $component = ucfirst(strtolower($match['class']));
+        $component = $match['class'];
 
         // TODO: handle error  dependency
         if ( !key_exists($component, self::$components) )

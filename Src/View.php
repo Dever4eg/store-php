@@ -37,14 +37,16 @@ class View
 //            'cache' => BASE_PATH . '/var/cache/twig',
         ));
 
+        $this->params = array_merge($this->params, App::getViewConfig()->getParams());
 
-        $this->twig->addFunction( new \Twig_SimpleFunction('getUser', function() {
-            return (new Auth())->getUser();
-        }));
+        foreach (App::getViewConfig()->getFunctions() as $name => $function) {
+            $this->twig->addFunction( new \Twig_SimpleFunction($name, $function));
+        }
 
-        $this->twig->addFunction( new \Twig_SimpleFunction('getFlashMessages', function() {
-            return App::getSession()->getFlashMessages();
-        }));
+
+
+
+
     }
 
     public function withParam($name, $value)
