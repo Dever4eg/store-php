@@ -22,7 +22,7 @@
                 <td>{{ product.id}}</td>
                 <td><img src="{{ product.image }}" alt="" class="img-fluid"></td>
                 <td><a href="/details?id={{ product.id }}">{{ product.title }}</a></td>
-                <td>{{ product.description|slice(0, 200) }}...</td>
+                <td>{{ product.description|slice(0, 100) |raw}}...</td>
                 <td class="price">${{ product.price }}</td>
             </tr>
 

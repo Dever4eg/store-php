@@ -31,7 +31,9 @@ class AdminController
 
     public function products(ServerRequestInterface $request)
     {
-        $products = Product::query()->paginate(10, $request);
+        $products = Product::query()
+            ->orderBy('created_at', 'desc')
+            ->paginate(10, $request);
 
         $view = new View('admin/products/index');
         $view->withParam('products', $products['results'])

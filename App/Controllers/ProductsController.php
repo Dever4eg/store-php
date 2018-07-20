@@ -16,6 +16,7 @@ use Src\App;
 use Src\Authorization\Auth;
 use Src\Controller;
 use Src\Exceptions\Http\Error404Exception;
+use Src\Session\FlashMessage;
 use Src\View;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
@@ -70,9 +71,16 @@ class ProductsController extends Controller
             return new RedirectResponse($request->getServerParams()['HTTP_REFERER']);
         }
 
-        var_dump($r);
+        $product = new Product();
+        $product->title = $r['title'];
+        $product->price = $r['price'];
+        $product->description = $r['description'];
+        $product->image = $r['image'] ?? "https://www.gransbygden.se/static/files/0/ecommerce-default-product.png";
+        $product->save();
 
-        var_dump("ok");die;
+        App::getSession()->setFlashMessage(new FlashMessage('success', 'Success', 'Product added'));
+
+        return new RedirectResponse('/admin/products');
     }
 
 }
