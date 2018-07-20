@@ -1,0 +1,10 @@
+{% extends "layouts/main.twig" %}
+
+{% block content %}
+    <h4>Cart</h4>
+    {% include "cart/part.twig" %}
+    <h4>Summary price: <span class="price">{{ cartProductsSum }}</span></h4>
+    <form class="float-right" action="/order" method="post">
+        <input type="submit"    class="btn btn-primary">
+    </form>
+{% endblock %}

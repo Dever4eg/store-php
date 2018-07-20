@@ -23,7 +23,7 @@ class CartController
     {
         $cart = new Cart();
 
-        $view = new View('cart');
+        $view = new View('cart/page');
         $view->withParams([
             'cart' => $cart->all(),
             'summary' => $cart->sum(),
