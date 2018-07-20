@@ -15,8 +15,9 @@
         <ul class="navbar-nav float-right">
 
             <li class="nav-item">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Cart</button>
-                {#<a class="nav-link" href="cart">Cart</a>#}
+                <a href="#cart" class="btn btn-primary mr-sm-3" data-toggle="modal" data-target=".bd-example-modal-lg">
+                    Cart <i class="fas fa-shopping-cart"></i>
+                </a>
             </li>
 
             {% if not getUser() %}
@@ -26,10 +27,10 @@
             {% else %}
                 <li class="nav-item">
 
-                    {% if getUser().role =='admin' %}
-                        <a href="/admin" class="navbar-text mr-sm-2">Admin panel</a>
+                    {% if getUser().role.name =='admin' %}
+                        <a href="/admin" class="navbar-text mr-sm-3">Admin panel</a>
                     {% else %}
-                        <a href="/account" class="navbar-text mr-sm-2">Hello, {{ getUser().email }}</a>
+                        <a href="/account" class="navbar-text mr-sm-3">Hello, {{ getUser().email }}</a>
                     {% endif %}
                 </li>
                 <li class="nav-item">
