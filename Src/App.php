@@ -10,19 +10,17 @@ namespace Src;
 
 
 use Psr\Http\Message\ResponseInterface;
-use Src\App\AppSingleComponent;
-use Src\App\Container;
-use Src\Database\DB;
-use src\Exceptions\Http\Error404Exception;
+use Psr\Http\Message\ServerRequestInterface;
+use Zend\Diactoros\ServerRequestFactory;
+use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
+use Src\Middleware\ErrorHandlerMiddleware;
 use Src\Middleware\MiddlewareHandler;
+use Src\Middleware\RouterMiddleware;
+use Src\App\Container;
 use Src\Routing\Router;
 use Src\Logging\Logger;
 use Src\Session\Session;
-use Src\Traits\Singleton;
 use Src\View\ViewConfig;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\ServerRequestFactory;
-use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
 
 /**
  * Class App
@@ -40,29 +38,22 @@ class App extends Container
 
     public static function run()
     {
-        (new ErrorHandler())
-            ->setDebugMode(App::getConfig()->get("debug") ?? false)
-            ->register();
 
-        try {
-            $request = ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
+        $request = ServerRequestFactory::fromGlobals();
 
-            $match = self::getRouter()->getMatch($request);
-            $middleware = self::getMiddleware();
-            if($match->middlewareExist()) {
-                foreach ($match->getMiddleware() as $item) {
-                    $middleware->register($item);
-                }
-            }
-            $response = $middleware->run($request, $match->handler);
+        $middleware = self::getMiddleware();
 
-        } catch (Error404Exception $e) {
-            $response = (new view('errors/error404'))->getHtmlResponse();
-        } finally {
-            if(
-                empty(ob_get_length()) && isset($response ) && $response instanceof ResponseInterface) {
-                (new SapiEmitter)->emit($response);
-            }
+        $middleware->register(new ErrorHandlerMiddleware());
+        $middleware->register(new RouterMiddleware());
+
+
+        $response = $middleware->run($request, function (ServerRequestInterface $request) {
+            $handler = App::getRouter()->getMatch($request)->handler;
+            return $handler($request);
+        });
+
+        if(empty(ob_get_length()) && isset($response ) && $response instanceof ResponseInterface) {
+            (new SapiEmitter)->emit($response);
         }
 
     }
@@ -78,9 +69,4 @@ class App extends Container
             'ViewConfig'    => ViewConfig::class,
         ]);
     }
-
-
-
-
-
 }
