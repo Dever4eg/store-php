@@ -10,6 +10,7 @@ namespace Src;
 
 
 use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
+use Src\View\View;
 
 class ErrorHandler
 {

@@ -11,8 +11,8 @@ namespace Src\App;
 
 class Container
 {
-    private static $components = [];
-    private static $instances = [];
+    protected static $components = [];
+    protected static $instances = [];
 
     protected static function isInterfaceImplement($class, $interface)
     {
@@ -28,10 +28,13 @@ class Container
 
     public static function addComponent($alias, $class)
     {
+        if (!self::isInterfaceImplement($class, AppSingleComponent::class)) {
+            throw new ContainerException('Component is not implement '. AppSingleComponent::class);
+        }
         self::$components[$alias] = $class;
     }
 
-    public static function addConponents(array $components)
+    public static function addComponents(array $components)
     {
         foreach ($components as $alias => $component) {
             self::addComponent($alias, $component);
@@ -45,20 +48,16 @@ class Container
             trigger_error('Call to undefined method '.static::class.'::'.$name.'()', E_USER_ERROR);
         }
 
-
         $component = $match['class'];
 
-        if ( !key_exists($component, self::$components) ) {
-            throw new ContainerException("Component ". $component ."not defined");
+        if( key_exists($component, self::$instances) ) {
+            return self::$instances[$component];
         }
 
-        $class = self::$components[$component];
+        if( !key_exists($component, self::$components) ) {
+            throw new ContainerException("Component ". $component ." not defined");
+        }
 
-        if( key_exists($component, self::$instances) ) return self::$instances[$component];
-
-        if (self::isInterfaceImplement($class, AppSingleComponent::class))
-            return (self::$instances[$component] = new self::$components[$component]);
-
-        return false;
+        return (self::$instances[$component] = new self::$components[$component]);
     }
 }

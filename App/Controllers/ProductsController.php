@@ -17,7 +17,7 @@ use Src\Authorization\Auth;
 use Src\Controller;
 use Src\Exceptions\Http\Error404Exception;
 use Src\Session\FlashMessage;
-use Src\View;
+use Src\View\View;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\RedirectResponse;
 
