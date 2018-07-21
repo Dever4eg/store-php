@@ -11,7 +11,7 @@ namespace Src\View;
 
 use Src\App\AppSingleComponent;
 
-class ViewConfig implements AppSingleComponent
+class ViewGlobal implements AppSingleComponent
 {
     private $params = [];
     private $functions = [];

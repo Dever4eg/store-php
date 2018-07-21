@@ -20,7 +20,7 @@ use Src\App\Container;
 use Src\Routing\Router;
 use Src\Logging\Logger;
 use Src\Session\Session;
-use Src\View\ViewConfig;
+use Src\View\ViewGlobal;
 
 /**
  * Class App
@@ -30,8 +30,9 @@ use Src\View\ViewConfig;
  * @method static Config getConfig()
  * @method static Logger getLogger()
  * @method static MiddlewareHandler getMiddleware()
- * @method static ViewConfig getViewConfig()
+ * @method static ViewGlobal getViewGlobal()
  */
+
 class App extends Container
 {
 
@@ -42,10 +43,6 @@ class App extends Container
         $request = ServerRequestFactory::fromGlobals();
 
         $middleware = self::getMiddleware();
-
-        $middleware->register(new ErrorHandlerMiddleware());
-        $middleware->register(new RouterMiddleware());
-
 
         $response = $middleware->run($request, function (ServerRequestInterface $request) {
             $handler = App::getRouter()->getMatch($request)->handler;
@@ -60,13 +57,18 @@ class App extends Container
 
     public static function registerCoreComponents()
     {
-        self::addConponents([
+        self::addComponents([
             'Router'        => Router::class,
             'Middleware'    => MiddlewareHandler::class,
             'Config'        => Config::class,
             'Session'       => Session::class,
             'Logger'        => Logger::class,
-            'ViewConfig'    => ViewConfig::class,
+            'ViewGlobal'    => ViewGlobal::class,
         ]);
+
+
+        $middleware = self::getMiddleware();
+        $middleware->register(new ErrorHandlerMiddleware());
+        $middleware->register(new RouterMiddleware());
     }
 }

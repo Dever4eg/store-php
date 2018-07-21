@@ -7,7 +7,7 @@
 
 use App\Controllers;
 use \Src\Routing\Router;
-use Src\View;
+use Src\View\View;
 
 $router = \Src\App::getRouter();
 
@@ -62,6 +62,6 @@ $router->group(function (Router $router) {
 
 // only unauthorized users
 $router->group(function (Router $router) {
-    $router->get('/login',      [new View("login"), 'getHtmlResponse']);
+    $router->get('/login',      [new View("auth/login"), 'getHtmlResponse']);
     $router->post('/login',     [new Controllers\AuthController(), 'login']);
 }, ['middleware' => 'guest']);

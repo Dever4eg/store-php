@@ -6,10 +6,10 @@
  * Time: 00:40
  */
 
-namespace Src;
+namespace Src\View;
 
 
-use Src\Authorization\Auth;
+use Src\App;
 use Zend\Diactoros\Response\HtmlResponse;
 
 class View
@@ -27,7 +27,7 @@ class View
 
         $this->path = [
             App::getConfig()->get('views_dir') ?? APP_PATH . '/views',
-            __DIR__.'/views',
+            __DIR__ . '/views',
         ];
 
         $this->view = $view . '.' . $this->extension;
@@ -37,9 +37,9 @@ class View
 //            'cache' => BASE_PATH . '/var/cache/twig',
         ));
 
-        $this->params = array_merge($this->params, App::getViewConfig()->getParams());
+        $this->params = array_merge($this->params, App::getViewGlobal()->getParams());
 
-        foreach (App::getViewConfig()->getFunctions() as $name => $function) {
+        foreach (App::getViewGlobal()->getFunctions() as $name => $function) {
             $this->twig->addFunction( new \Twig_SimpleFunction($name, $function));
         }
 

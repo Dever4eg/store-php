@@ -21,8 +21,8 @@ class CartMiddleware implements MiddlewareInterface
     {
         $cart = new Cart();
 
-        App::getViewConfig()->setParam('cart', $cart->all());
-        App::getViewConfig()->setParam('cartProductsSum', $cart->sum());
+        App::getViewGlobal()->setParam('cart', $cart->all());
+        App::getViewGlobal()->setParam('cartProductsSum', $cart->sum());
 
         return $next($request, $response, $next);
     }

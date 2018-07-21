@@ -13,7 +13,7 @@ use App\Models\Order;
 use App\Models\OrderedProducts;
 use Psr\Http\Message\ServerRequestInterface;
 use Src\Authorization\Auth;
-use Src\View;
+use Src\View\View;
 
 class UsersController
 {

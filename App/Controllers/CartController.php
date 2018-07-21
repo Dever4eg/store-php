@@ -14,7 +14,7 @@ use App\Models\Cart;
 use Psr\Http\Message\ServerRequestInterface;
 use Src\App;
 use Src\Session\FlashMessage;
-use Src\View;
+use Src\View\View;
 use Zend\Diactoros\Response\RedirectResponse;
 
 class CartController

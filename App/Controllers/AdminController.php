@@ -14,7 +14,7 @@ use App\Models\OrderedProducts;
 use App\Models\Product;
 use App\Models\User;
 use Psr\Http\Message\ServerRequestInterface;
-use Src\View;
+use Src\View\View;
 
 class AdminController
 {

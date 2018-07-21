@@ -14,7 +14,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Src\App;
 use Src\ErrorHandler;
 use Src\Exceptions\Http\Error404Exception;
-use Src\View;
+use Src\View\View;
 
 class ErrorHandlerMiddleware implements MiddlewareInterface
 {
