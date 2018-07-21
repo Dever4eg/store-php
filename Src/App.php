@@ -11,6 +11,7 @@ namespace Src;
 
 use Psr\Http\Message\ResponseInterface;
 use Src\App\AppSingleComponent;
+use Src\App\Container;
 use Src\Database\DB;
 use src\Exceptions\Http\Error404Exception;
 use Src\Middleware\MiddlewareHandler;
@@ -31,18 +32,11 @@ use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
  * @method static Config getConfig()
  * @method static Logger getLogger()
  * @method static MiddlewareHandler getMiddleware()
- * @method static DB getDB()
  * @method static ViewConfig getViewConfig()
  */
-class App
+class App extends Container
 {
-    protected static $components = [];
-    protected static $instances = [];
 
-    public static function init()
-    {
-        self::addSystemComponents();
-    }
 
     public static function run()
     {
@@ -73,54 +67,20 @@ class App
 
     }
 
-    protected static function addSystemComponents()
+    public static function registerCoreComponents()
     {
-        self::$components = array_merge(self::$components, [
+        self::addConponents([
             'Router'        => Router::class,
-            'Session'       => Session::class,
-            'Config'        => Config::class,
-            'Logger'        => Logger::class,
             'Middleware'    => MiddlewareHandler::class,
-            'Db'            => DB::class,
+            'Config'        => Config::class,
+            'Session'       => Session::class,
+            'Logger'        => Logger::class,
             'ViewConfig'    => ViewConfig::class,
         ]);
     }
 
-    protected static function isInterfaceImplement($class, $interface)
-    {
-        $interfaces = class_implements($class);
-        return isset($interfaces[$interface]);
-    }
-
-    protected static function isUseTrait($class, $trait)
-    {
-        $traits = class_uses($class);
-        return isset($traits[$trait]);
-    }
 
 
-    public static function __callStatic($name, $arguments)
-    {
-        // TODO: handle error  get dependency
-        if(!preg_match("#^get(?P<class>\w+)#", $name, $match))
-            die("error get dependency");
 
-        $component = $match['class'];
 
-        // TODO: handle error  dependency
-        if ( !key_exists($component, self::$components) )
-            die("error dependency not defined");
-
-        $class = self::$components[$component];
-
-        if( key_exists($component, self::$instances) ) return self::$instances[$component];
-
-        if (self::isInterfaceImplement($class, AppSingleComponent::class))
-            return (self::$instances[$component] = new self::$components[$component]);
-
-        if (self::isUseTrait($class, Singleton::class))
-            return (self::$instances[$component] = self::$components[$component]::instance());
-
-        return false;
-    }
 }

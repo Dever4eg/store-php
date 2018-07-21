@@ -17,7 +17,7 @@ class FrontController
 {
     public function run()
     {
-        App::init();
+        App::registerCoreComponents();
 
 
         App::getMiddleware()->setAliases([
