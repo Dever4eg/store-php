@@ -4,7 +4,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 const BASE_PATH = __DIR__;
-\Src\App::init();
+\Src\App::registerCoreComponents();
 $config = \Src\App::getConfig()->loadConfigFromFile(__DIR__.'/App/configs/app.php');
 
 return
